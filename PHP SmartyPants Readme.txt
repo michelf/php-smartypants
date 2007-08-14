@@ -1,25 +1,29 @@
-PHP SmartyPants
-===============
+PHP SmartyPants Typographer
+===========================
 
-Version 1.5.1oo - Fri 19 May 2006
+Version 1.0 - Wed 28 Jun 2006
 
 by Michel Fortin
 <http://www.michelf.com/>
 
-based on work by John Gruber  
+Original SmartyPants by John Gruber  
 <http://daringfireball.net/>
 
 
 Introduction
 ------------
 
-PHP SmartyPants is a port to PHP of the original SmartyPants written 
-in Perl by John Gruber.
+This is a special version of PHP SmartyPants with extra features. See 
+<http://www.michelf.com/projects/php-smartypants/typographer/> for 
+details.
 
 PHP SmartyPants is a free web publishing plug-in for WordPress and 
 Smarty template engine that easily translates plain ASCII punctuation 
 characters into "smart" typographic punctuation HTML entities. 
 SmartyPants can also be invoked as a standalone PHP function.
+
+PHP SmartyPants is a port to PHP of the original SmartyPants written 
+in Perl by John Gruber.
 
 SmartyPants can perform the following transformations:
 
@@ -104,28 +108,6 @@ Note: It is not possible at this time to apply a different set of
 filters to different entries. All your entries will be filtered by 
 PHP SmartyPants if the plugin is active. This is currently a limitation 
 of WordPress.
-
-
-### Blosxom ###
-
-SmartyPants works with Blosxom version 2.0 or later.
-
-1.  Rename the "SmartyPants.pl" plug-in to "SmartyPants" (case is
-    important). Movable Type requires plug-ins to have a ".pl"
-    extension; Blosxom forbids it (at least as of this writing).
-
-2.  Copy the "SmartyPants" plug-in file to your Blosxom plug-ins folder.
-    If you're not sure where your Blosxom plug-ins folder is, see the
-    Blosxom documentation for information.
-
-3.  That's it. The entries in your weblog should now automatically have
-    SmartyPants's default transformations applied.
-
-4.  If you wish to configure SmartyPants's behavior, open the
-    "SmartyPants" plug-in, and edit the value of the `$smartypants_attr`
-    configuration variable, located near the top of the script. The
-    default value is 1; see "Options", below, for the full list of
-    supported values.
 
 
 ### In your programs ###
@@ -233,52 +215,16 @@ Or inside a Smarty template:
     "b"). Thus, if you wish to apply all SmartyPants transformations
     (quotes, en- and em-dashes, and ellipses) and also translate
     `&quot;` entities into regular quotes so SmartyPants can educate
-    them, you should pass the following to the smarty_pants attribute:
+    them, you should set the SMARTYPANTS_ATTR constant at the top of 
+    the file to:
 
-        $smartypants_attr = "qDew";
+        define( 'SMARTYPANTS_ATTR',    "qDew" );
 
-    Inside a Smarty template, this will be:
+    Inside a Smarty template, you could also pass the string as a 
+    parameter:
 
         {$var|smartypants:"qDew"}
 
-
-Caveats
--------
-
-### Why You Might Not Want to Use Smart Quotes in Your Weblog ###
-
-For one thing, you might not care.
-
-Most normal, mentally stable individuals do not take notice of proper
-typographic punctuation. Many design and typography nerds, however,
-break out in a nasty rash when they encounter, say, a restaurant sign
-that uses a straight apostrophe to spell "Joe's".
-
-If you're the sort of person who just doesn't care, you might well want
-to continue not caring. Using straight quotes -- and sticking to the
-7-bit ASCII character set in general -- is certainly a simpler way to
-live.
-
-Even if you *do* care about accurate typography, you still might want to
-think twice before educating the quote characters in your weblog. One
-side effect of publishing curly quote HTML entities is that it makes
-your weblog a bit harder for others to quote from using copy-and-paste.
-What happens is that when someone copies text from your blog, the copied
-text contains the 8-bit curly quote characters (as well as the 8-bit
-characters for em-dashes and ellipses, if you use these options). These
-characters are not standard across different text encoding methods,
-which is why they need to be encoded as HTML entities.
-
-People copying text from your weblog, however, may not notice that
-you're using curly quotes, and they'll go ahead and paste the unencoded
-8-bit characters copied from their browser into an email message or
-their own weblog. When pasted as raw "smart quotes", these characters
-are likely to get mangled beyond recognition.
-
-That said, my own opinion is that any decent text editor or email client
-makes it easy to stupefy smart quote characters into their 7-bit
-equivalents, and I don't consider it my problem if you're using an
-indecent text editor or email client.
 
 ### Algorithmic Shortcomings ###
 
@@ -310,90 +256,6 @@ example text to illustrate.
 Version History
 ---------------
 
-1.5.1oo (19 May 2006)
+1.0 (28 Jun 2006)
 
-*   Converted SmartyPants to a object-oriented design.
-
-
-1.5.1e (9 Dec 2005)
-
-*	Corrected a bug that prevented special characters from being 
-    escaped.
-
-
-1.5.1d (6 Jun 2005)
-
-*	Correct a small bug in `_TokenizeHTML` where a Doctype declaration
-	was not seen as HTML, making curly quotes inside it.
-
-
-1.5.1c (13 Dec 2004)
-
-*	Changed a regular expression in `_TokenizeHTML` that could lead
-	to a segmentation fault with PHP 4.3.8 on Linux.
-
-
-1.5.1b (6 Sep 2004)
-
-*	Corrected a problem with quotes immediately following a dash
-	with no space between: `Text--"quoted text"--text.`
-	
-*	PHP SmartyPants can now be used as a modifier by the Smarty 
-	template engine. Rename the file to "modifier.smartypants.php"
-	and put it in your smarty plugins folder.
-
-*	Replaced a lot of spaces characters by tabs, saving about 4 KB.
-
-
-1.5.1a (30 Jun 2004)
-
-*	PHP Markdown and PHP Smartypants now share the same `_TokenizeHTML` 
-	function when loaded simultanously.
-
-*	Changed the internals of `_TokenizeHTML` to lower the PHP version
-	requirement to PHP 4.0.5.
-
-
-1.5.1 (6 Jun 2004)
-
-*	Initial release of PHP SmartyPants, based on version 1.5.1 of the 
-	original SmartyPants written in Perl.
-
-
-Copyright and License
----------------------
-
-Copyright (c) 2005 Michel Fortin  
-<http://www.michelf.com/>  
-All rights reserved.
-
-Copyright (c) 2003-2004 John Gruber   
-<http://daringfireball.net/>   
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-*   Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
-
-*   Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
-
-*   Neither the name "SmartyPants" nor the names of its contributors may
-    be used to endorse or promote products derived from this software
-    without specific prior written permission.
-
-This software is provided by the copyright holders and contributors "as
-is" and any express or implied warranties, including, but not limited
-to, the implied warranties of merchantability and fitness for a
-particular purpose are disclaimed. In no event shall the copyright owner
-or contributors be liable for any direct, indirect, incidental, special,
-exemplary, or consequential damages (including, but not limited to,
-procurement of substitute goods or services; loss of use, data, or
-profits; or business interruption) however caused and on any theory of
-liability, whether in contract, strict liability, or tort (including
-negligence or otherwise) arising in any way out of the use of this
-software, even if advised of the possibility of such damage.
+*   First public release of PHP SmartyPants Typographer.
