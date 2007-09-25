@@ -12,7 +12,7 @@
 #
 
 
-define( 'SMARTYPANTS_VERSION',  "1.5.1oo" ); # Fri 19 May 2006
+define( 'SMARTYPANTS_VERSION',  "1.5.1oo2" ); # Unreleased
 
 
 #
@@ -182,14 +182,14 @@ class SmartyPants_Parser {
 		else {
 			$chars = preg_split('//', $attr);
 			foreach ($chars as $c){
-				if      ($c == "q") { $do_quotes    = 1; }
-				else if ($c == "b") { $do_backticks = 1; }
-				else if ($c == "B") { $do_backticks = 2; }
-				else if ($c == "d") { $do_dashes    = 1; }
-				else if ($c == "D") { $do_dashes    = 2; }
-				else if ($c == "i") { $do_dashes    = 3; }
-				else if ($c == "e") { $do_ellipses  = 1; }
-				else if ($c == "w") { $convert_quot = 1; }
+				if      ($c == "q") { $this->do_quotes    = 1; }
+				else if ($c == "b") { $this->do_backticks = 1; }
+				else if ($c == "B") { $this->do_backticks = 2; }
+				else if ($c == "d") { $this->do_dashes    = 1; }
+				else if ($c == "D") { $this->do_dashes    = 2; }
+				else if ($c == "i") { $this->do_dashes    = 3; }
+				else if ($c == "e") { $this->do_ellipses  = 1; }
+				else if ($c == "w") { $this->convert_quot = 1; }
 				else {
 					# Unknown attribute option, ignore.
 				}
@@ -225,52 +225,7 @@ class SmartyPants_Parser {
 				$t = $cur_token[1];
 				$last_char = substr($t, -1); # Remember last char of this token before processing.
 				if (! $in_pre) {
-					$t = $this->processEscapes($t);
-
-					if ($this->convert_quot) {
-						$t = preg_replace('/&quot;/', '"', $t);
-					}
-
-					if ($this->do_dashes) {
-						if ($this->do_dashes == 1) $t = $this->educateDashes($t);
-						if ($this->do_dashes == 2) $t = $this->educateDashesOldSchool($t);
-						if ($this->do_dashes == 3) $t = $this->educateDashesOldSchoolInverted($t);
-					}
-
-					if ($this->do_ellipses) $t = $this->educateEllipses($t);
-
-					# Note: backticks need to be processed before quotes.
-					if ($this->do_backticks) {
-						$t = $this->educateBackticks($t);
-						if ($this->do_backticks == 2) $t = $this->educateSingleBackticks($t);
-					}
-
-					if ($this->do_quotes) {
-						if ($t == "'") {
-							# Special case: single-character ' token
-							if (preg_match('/\S/', $prev_token_last_char)) {
-								$t = "&#8217;";
-							}
-							else {
-								$t = "&#8216;";
-							}
-						}
-						else if ($t == '"') {
-							# Special case: single-character " token
-							if (preg_match('/\S/', $prev_token_last_char)) {
-								$t = "&#8221;";
-							}
-							else {
-								$t = "&#8220;";
-							}
-						}
-						else {
-							# Normal case:
-							$t = $this->educateQuotes($t);
-						}
-					}
-
-					if ($this->do_stupefy) $t = $this->stupefyEntities($t);
+					$t = $this->educate($t, $prev_token_last_char);
 				}
 				$prev_token_last_char = $last_char;
 				$result .= $t;
@@ -278,6 +233,58 @@ class SmartyPants_Parser {
 		}
 
 		return $result;
+	}
+
+
+	function educate($t, $prev_token_last_char) {
+		$t = $this->processEscapes($t);
+
+		if ($this->convert_quot) {
+			$t = preg_replace('/&quot;/', '"', $t);
+		}
+
+		if ($this->do_dashes) {
+			if ($this->do_dashes == 1) $t = $this->educateDashes($t);
+			if ($this->do_dashes == 2) $t = $this->educateDashesOldSchool($t);
+			if ($this->do_dashes == 3) $t = $this->educateDashesOldSchoolInverted($t);
+		}
+
+		if ($this->do_ellipses) $t = $this->educateEllipses($t);
+
+		# Note: backticks need to be processed before quotes.
+		if ($this->do_backticks) {
+			$t = $this->educateBackticks($t);
+			if ($this->do_backticks == 2) $t = $this->educateSingleBackticks($t);
+		}
+
+		if ($this->do_quotes) {
+			if ($t == "'") {
+				# Special case: single-character ' token
+				if (preg_match('/\S/', $prev_token_last_char)) {
+					$t = "&#8217;";
+				}
+				else {
+					$t = "&#8216;";
+				}
+			}
+			else if ($t == '"') {
+				# Special case: single-character " token
+				if (preg_match('/\S/', $prev_token_last_char)) {
+					$t = "&#8221;";
+				}
+				else {
+					$t = "&#8220;";
+				}
+			}
+			else {
+				# Normal case:
+				$t = $this->educateQuotes($t);
+			}
+		}
+
+		if ($this->do_stupefy) $t = $this->stupefyEntities($t);
+		
+		return $t;
 	}
 
 
