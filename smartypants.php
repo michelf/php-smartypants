@@ -12,8 +12,8 @@
 #
 
 
-define( 'SMARTYPANTS_VERSION',            "1.5.1oo2" ); # Unreleased
-define( 'SMARTYPANTSTYPOGRAPHER_VERSION', "1.0"      ); # Wed 28 Jun 2006
+define( 'SMARTYPANTS_VERSION',  "1.5.1oo2" ); # Unreleased
+define( 'SMARTYPANTSTYPOGRAPHER_VERSION',  "1.0" ); # Wed 28 Jun 2006
 
 
 #
