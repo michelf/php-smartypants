@@ -27,7 +27,7 @@ define( 'SMARTYPANTS_ATTR',    1 );
 
 
 # SmartyPants will not alter the content of these tags:
-define( 'SMARTYPANTS_TAGS_TO_SKIP', 'pre|code|kbd|script|math');
+define( 'SMARTYPANTS_TAGS_TO_SKIP', 'pre|code|kbd|script|style|math');
 
 
 ### Standard Function Interface ###
