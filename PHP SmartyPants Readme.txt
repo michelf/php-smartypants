@@ -310,6 +310,12 @@ example text to illustrate.
 Version History
 ---------------
 
+Current:
+
+*	Lowered WordPress filtering priority to avoid clashing with the 
+	[caption] tag filter. Thanks to Mehdi Kabab for the fix.
+
+
 1.5.1oo (19 May 2006)
 
 *   Converted SmartyPants to a object-oriented design.

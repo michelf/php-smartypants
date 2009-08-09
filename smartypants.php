@@ -98,15 +98,17 @@ if (isset($wp_version)) {
 	remove_filter('the_title', 'wptexturize');
 	remove_filter('the_content', 'wptexturize');
 	remove_filter('the_excerpt', 'wptexturize');
-	# Add SmartyPants filter with priority 10 (same as Texturize).
-	add_filter('category_description', 'SmartyPants', 10);
-	add_filter('list_cats', 'SmartyPants', 10);
-	add_filter('comment_author', 'SmartyPants', 10);
-	add_filter('comment_text', 'SmartyPants', 10);
-	add_filter('single_post_title', 'SmartyPants', 10);
-	add_filter('the_title', 'SmartyPants', 10);
-	add_filter('the_content', 'SmartyPants', 10);
-	add_filter('the_excerpt', 'SmartyPants', 10);
+	remove_filter('the_tags', 'wptexturize');
+	# Add SmartyPants filter.
+	add_filter('category_description', 'SmartyPants', 11);
+	add_filter('list_cats', 'SmartyPants', 11);
+	add_filter('comment_author', 'SmartyPants', 11);
+	add_filter('comment_text', 'SmartyPants', 11);
+	add_filter('single_post_title', 'SmartyPants', 11);
+	add_filter('the_title', 'SmartyPants', 11);
+	add_filter('the_content', 'SmartyPants', 11);
+	add_filter('the_excerpt', 'SmartyPants', 11);
+	add_filter('the_tags', 'SmartyPants', 11);
 }
 
 
