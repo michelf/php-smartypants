@@ -1,8 +1,8 @@
 <?php
 #
-# SmartyPants Typographer  -  Smart typography for web sites
+# SmartyPants  -  Smart typography for web sites
 #
-# PHP SmartyPants & Typographer  
+# PHP SmartyPants  
 # Copyright (c) 2004-2006 Michel Fortin
 # <http://www.michelf.com/>
 #
@@ -10,10 +10,11 @@
 # Copyright (c) 2003-2004 John Gruber
 # <http://daringfireball.net/>
 #
+namespace michelf;
 
 
-define( 'SMARTYPANTS_VERSION',  "1.5.1oo2" ); # Unreleased
-define( 'SMARTYPANTSTYPOGRAPHER_VERSION',  "1.0" ); # Wed 28 Jun 2006
+const  SMARTYPANTS_VERSION  =  "1.5.1oo2"; # Unreleased
+const  SMARTYPANTSTYPOGRAPHER_VERSION  =  "1.0"; # Wed 28 Jun 2006
 
 
 #
@@ -58,100 +59,41 @@ define( 'SMARTYPANTS_SPACE_UNIT',        "&#160;" );
 define( 'SMARTYPANTS_TAGS_TO_SKIP', 'pre|code|kbd|script|math');
 
 
-
-### Standard Function Interface ###
-
-define( 'SMARTYPANTS_PARSER_CLASS', 'SmartyPantsTypographer_Parser' );
-
-function SmartyPants($text, $attr = SMARTYPANTS_ATTR) {
-#
-# Initialize the parser and return the result of its transform method.
-#
-	# Setup static parser array.
-	static $parser = array();
-	if (!isset($parser[$attr])) {
-		$parser_class = SMARTYPANTS_PARSER_CLASS;
-		$parser[$attr] = new $parser_class($attr);
-	}
-
-	# Transform text using parser.
-	return $parser[$attr]->transform($text);
-}
-
-function SmartQuotes($text, $attr = 1) {
-	switch ($attr) {
-		case 0:  return $text;
-		case 2:  $attr = 'qb'; break;
-		default: $attr = 'q'; break;
-	}
-	return SmartyPants($text, $attr);
-}
-
-function SmartDashes($text, $attr = 1) {
-	switch ($attr) {
-		case 0:  return $text;
-		case 2:  $attr = 'D'; break;
-		case 3:  $attr = 'i'; break;
-		default: $attr = 'd'; break;
-	}
-	return SmartyPants($text, $attr);
-}
-
-function SmartEllipsis($text, $attr = 1) {
-	switch ($attr) {
-		case 0:  return $text;
-		default: $attr = 'e'; break;
-	}
-	return SmartyPants($text, $attr);
-}
-
-
-### WordPress Plugin Interface ###
-
-/*
-Plugin Name: SmartyPants Typographer
-Plugin URI: http://www.michelf.com/projects/php-smartypants/
-Description: SmartyPants is a web publishing utility that translates plain ASCII punctuation characters into &#8220;smart&#8221; typographic punctuation HTML entities. The Typographer extension will also replace normal spaces with unbrekable ones where appropriate to silently remove unwanted line breaks around punctuation and at some other places. This plugin <strong>replace the default WordPress Texturize algorithm</strong> for the content and the title of your posts, the comments body and author name, and everywhere else Texturize normally apply.
-Version: 1.0
-Author: Michel Fortin
-Author URI: http://www.michelf.com/
-*/
-
-if (isset($wp_version)) {
-	# Remove default Texturize filter that would conflict with SmartyPants.
-	remove_filter('category_description', 'wptexturize');
-	remove_filter('list_cats', 'wptexturize');
-	remove_filter('comment_author', 'wptexturize');
-	remove_filter('comment_text', 'wptexturize');
-	remove_filter('single_post_title', 'wptexturize');
-	remove_filter('the_title', 'wptexturize');
-	remove_filter('the_content', 'wptexturize');
-	remove_filter('the_excerpt', 'wptexturize');
-	# Add SmartyPants filter with priority 10 (same as Texturize).
-	add_filter('category_description', 'SmartyPants', 10);
-	add_filter('list_cats', 'SmartyPants', 10);
-	add_filter('comment_author', 'SmartyPants', 10);
-	add_filter('comment_text', 'SmartyPants', 10);
-	add_filter('single_post_title', 'SmartyPants', 10);
-	add_filter('the_title', 'SmartyPants', 10);
-	add_filter('the_content', 'SmartyPants', 10);
-	add_filter('the_excerpt', 'SmartyPants', 10);
-}
-
-
-### Smarty Modifier Interface ###
-
-function smarty_modifier_smartypants($text, $attr = NULL) {
-	return SmartyPants($text, $attr);
-}
-
-
-
 #
 # SmartyPants Parser Class
 #
 
-class SmartyPants_Parser {
+class SmartyPants {
+
+	### Version ###
+
+	const  SMARTYPANTS_VERSION  = \michelf\SMARTYPANTS_VERSION;
+
+
+	### Standard Function Interface ###
+
+	static function defaultTransform($text, $attr = SMARTYPANTS_ATTR) {
+	#
+	# Initialize the parser and return the result of its transform method.
+	# This will work fine for derived classes too.
+	#
+		# Take parser class on which this function was called.
+		$parser_class = \get_called_class();
+
+		# try to take parser from the static parser list
+		static $parser_list;
+		$parser =& $parser_list[$parser_class][$attr];
+
+		# create the parser if not already set
+		if (!$parser)
+			$parser = new $parser_class($attr);
+
+		# Transform text using parser.
+		return $parser->transform($text);
+	}
+
+
+	### Configuration Variables ###
 
 	# Options to specify which transformations to make:
 	var $do_nothing   = 0;
@@ -162,9 +104,12 @@ class SmartyPants_Parser {
 	var $do_stupefy   = 0;
 	var $convert_quot = 0; # should we translate &quot; entities into normal quotes?
 
-	function SmartyPants_Parser($attr = SMARTYPANTS_ATTR) {
+
+	### Parser Implementation ###
+
+	function __construct($attr = SMARTYPANTS_ATTR) {
 	#
-	# Initialize a SmartyPants_Parser with certain attributes.
+	# Initialize a parser with certain attributes.
 	#
 	# Parser attributes:
 	# 0 : do nothing
@@ -597,7 +542,9 @@ class SmartyPants_Parser {
 #
 # SmartyPants Typographer Parser Class
 #
-class SmartyPantsTypographer_Parser extends SmartyPants_Parser {
+class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
+
+	### Configuration Variables ###
 
 	# Options to specify which transformations to make:
 	var $do_comma_quotes      = 0;
@@ -630,9 +577,10 @@ class SmartyPantsTypographer_Parser extends SmartyPants_Parser {
 	# Expression of a space (breakable or not):
 	var $space = '(?: | |&nbsp;|&#0*160;|&#x0*[aA]0;)';
 
-	
 
-	function SmartyPantsTypographer_Parser($attr = SMARTYPANTS_ATTR) {
+	### Parser Implementation ###
+
+	function __construct($attr = SMARTYPANTS_ATTR) {
 	#
 	# Initialize a SmartyPantsTypographer_Parser with certain attributes.
 	#
@@ -668,7 +616,7 @@ class SmartyPantsTypographer_Parser extends SmartyPants_Parser {
 	#    sign to completly remove any space present)
 	#
 		# Initialize inherited SmartyPants parser.
-		parent::SmartyPants_Parser($attr);
+		parent::__construct($attr);
 				
 		if ($attr == "1" || $attr == "2" || $attr == "3") {
 			# Do everything, turn all options on.
@@ -1102,83 +1050,4 @@ class SmartyPantsTypographer_Parser extends SmartyPants_Parser {
 }
 
 
-/*
-
-PHP SmartyPants Typographer
-===========================
-
-Version History
----------------
-
-1.0 (28 Jun 2006)
-
-*   First public release of PHP SmartyPants Typographer.
-
-
-Bugs
-----
-
-To file bug reports or feature requests (other than topics listed in the
-Caveats section above) please send email to:
-
-<michel.fortin@michelf.com>
-
-If the bug involves quotes being curled the wrong way, please send example
-text to illustrate.
-
-
-### Algorithmic Shortcomings ###
-
-One situation in which quotes will get curled the wrong way is when
-apostrophes are used at the start of leading contractions. For example:
-
-	'Twas the night before Christmas.
-
-In the case above, SmartyPants will turn the apostrophe into an opening
-single-quote, when in fact it should be a closing one. I don't think
-this problem can be solved in the general case -- every word processor
-I've tried gets this wrong as well. In such cases, it's best to use the
-proper HTML entity for closing single-quotes (`&#8217;`) by hand.
-
-
-Copyright and License
----------------------
-
-PHP SmartyPants & Typographer  
-Copyright (c) 2004-2006 Michel Fortin  
-<http://www.michelf.com>  
-All rights reserved.
-
-Original SmartyPants  
-Copyright (c) 2003-2004 John Gruber  
-<http://daringfireball.net/>  
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-*	Redistributions of source code must retain the above copyright
-	notice, this list of conditions and the following disclaimer.
-
-*	Redistributions in binary form must reproduce the above copyright
-	notice, this list of conditions and the following disclaimer in the
-	documentation and/or other materials provided with the distribution.
-
-*	Neither the name "SmartyPants" nor the names of its contributors may
-	be used to endorse or promote products derived from this software
-	without specific prior written permission.
-
-This software is provided by the copyright holders and contributors "as is"
-and any express or implied warranties, including, but not limited to, the 
-implied warranties of merchantability and fitness for a particular purpose 
-are disclaimed. In no event shall the copyright owner or contributors be 
-liable for any direct, indirect, incidental, special, exemplary, or 
-consequential damages (including, but not limited to, procurement of 
-substitute goods or services; loss of use, data, or profits; or business 
-interruption) however caused and on any theory of liability, whether in 
-contract, strict liability, or tort (including negligence or otherwise) 
-arising in any way out of the use of this software, even if advised of the
-possibility of such damage.
-
-*/
 ?>
