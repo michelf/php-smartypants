@@ -17,44 +17,6 @@ const  SMARTYPANTS_VERSION  =  "1.5.1oo2"; # Unreleased
 const  SMARTYPANTSTYPOGRAPHER_VERSION  =  "1.0"; # Wed 28 Jun 2006
 
 
-#
-# Default configuration:
-#
-#  1  ->  "--" for em-dashes; no en-dash support  
-#  2  ->  "---" for em-dashes; "--" for en-dashes  
-#  3  ->  "--" for em-dashes; "---" for en-dashes  
-#  See docs for more configuration options.
-#
-define( 'SMARTYPANTS_ATTR',    1 );
-
-# Openning and closing smart double-quotes.
-define( 'SMARTYPANTS_SMART_DOUBLEQUOTE_OPEN',  "&#8220;" );
-define( 'SMARTYPANTS_SMART_DOUBLEQUOTE_CLOSE', "&#8221;" );
-
-# Space around em-dashes.  "He_—_or she_—_should change that."
-define( 'SMARTYPANTS_SPACE_EMDASH',      " " );
-
-# Space around en-dashes.  "He_–_or she_–_should change that."
-define( 'SMARTYPANTS_SPACE_ENDASH',      " " );
-
-# Space before a colon. "He said_: here it is."
-define( 'SMARTYPANTS_SPACE_COLON',       "&#160;" );
-
-# Space before a semicolon. "That's what I said_; that's what he said."
-define( 'SMARTYPANTS_SPACE_SEMICOLON',   "&#160;" );
-
-# Space before a question mark and an exclamation mark: "¡_Holà_! What_?"
-define( 'SMARTYPANTS_SPACE_MARKS',       "&#160;" );
-
-# Space inside french quotes. "Voici la «_chose_» qui m'a attaqué."
-define( 'SMARTYPANTS_SPACE_FRENCHQUOTE', "&#160;" );
-
-# Space as thousand separator. "On compte 10_000 maisons sur cette liste."
-define( 'SMARTYPANTS_SPACE_THOUSAND',    "&#160;" );
-
-# Space before a unit abreviation. "This 12_kg of matter costs 10_$."
-define( 'SMARTYPANTS_SPACE_UNIT',        "&#160;" );
-
 # SmartyPants will not alter the content of these tags:
 define( 'SMARTYPANTS_TAGS_TO_SKIP', 'pre|code|kbd|script|math');
 
@@ -67,12 +29,27 @@ class SmartyPants {
 
 	### Version ###
 
-	const  SMARTYPANTS_VERSION  = \michelf\SMARTYPANTS_VERSION;
+	const  SMARTYPANTS_VERSION  =  \michelf\SMARTYPANTS_VERSION;
+
+
+	### Pre-Configured Modes ###
+
+	# SmartyPants does nothing at all
+	const  SMARTYPANTS_ATTR_DO_NOTHING             =  0;
+	# "--" for em-dashes; no en-dash support  
+	const  SMARTYPANTS_ATTR_EM_DASH                =  1;
+	# "---" for em-dashes; "--" for en-dashes  
+	const  SMARTYPANTS_ATTR_LONG_EM_DASH_SHORT_EN  =  2;
+	# "--" for em-dashes; "---" for en-dashes  
+	const  SMARTYPANTS_ATTR_SHORT_EM_DASH_LONG_EN  =  3;
+
+	# Default is SMARTYPANTS_ATTR_EM_DASH
+	const  SMARTYPANTS_ATTR_DEFAULT  =  SMARTYPANTS_ATTR_EM_DASH;
 
 
 	### Standard Function Interface ###
 
-	static function defaultTransform($text, $attr = SMARTYPANTS_ATTR) {
+	static function defaultTransform($text, $attr = SMARTYPANTS_ATTR_DEFAULT) {
 	#
 	# Initialize the parser and return the result of its transform method.
 	# This will work fine for derived classes too.
@@ -96,10 +73,10 @@ class SmartyPants {
 	### Configuration Variables ###
 
 	# Options to specify which transformations to make:
-	var $do_nothing   = 0;
+	var $do_nothing   = 0; # disable all transforms
 	var $do_quotes    = 0;
-	var $do_backticks = 0;
-	var $do_dashes    = 0;
+	var $do_backticks = 0; # 1 => double only, 2 => double & single
+	var $do_dashes    = 0; # 1, 2, or 3 for the three modes described above
 	var $do_ellipses  = 0;
 	var $do_stupefy   = 0;
 	var $convert_quot = 0; # should we translate &quot; entities into normal quotes?
@@ -107,7 +84,7 @@ class SmartyPants {
 
 	### Parser Implementation ###
 
-	function __construct($attr = SMARTYPANTS_ATTR) {
+	function __construct($attr = SMARTYPANTS_ATTR_DEFAULT) {
 	#
 	# Initialize a parser with certain attributes.
 	#
@@ -559,20 +536,29 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	var $do_space_unit        = 0;
 	
 	# Smart quote characters:
-	var $smart_doublequote_open  = SMARTYPANTS_SMART_DOUBLEQUOTE_OPEN;
-	var $smart_doublequote_close = SMARTYPANTS_SMART_DOUBLEQUOTE_CLOSE;
+	# Openning and closing smart double-quotes.
+	var $smart_doublequote_open  = '&#8220;';
+	var $smart_doublequote_close = '&#8221;';
 	var $smart_singlequote_open  = '&#8216;';
 	var $smart_singlequote_close = '&#8217;'; # Also apostrophe.
 
 	# Space characters for different places:
-	var $space_emdash      = SMARTYPANTS_SPACE_EMDASH;
-	var $space_endash      = SMARTYPANTS_SPACE_ENDASH;
-	var $space_colon       = SMARTYPANTS_SPACE_COLON;
-	var $space_semicolon   = SMARTYPANTS_SPACE_SEMICOLON;
-	var $space_marks       = SMARTYPANTS_SPACE_MARKS;
-	var $space_frenchquote = SMARTYPANTS_SPACE_FRENCHQUOTE;
-	var $space_thousand    = SMARTYPANTS_SPACE_THOUSAND;
-	var $space_unit        = SMARTYPANTS_SPACE_UNIT;
+	# Space around em-dashes.  "He_—_or she_—_should change that."
+	var $space_emdash      = " ";
+	# Space around en-dashes.  "He_–_or she_–_should change that."
+	var $space_endash      = " ";
+	# Space before a colon. "He said_: here it is."
+	var $space_colon       = "&#160;";
+	# Space before a semicolon. "That's what I said_; that's what he said."
+	var $space_semicolon   = "&#160;";
+	# Space before a question mark and an exclamation mark: "¡_Holà_! What_?"
+	var $space_marks       = "&#160;";
+	# Space inside french quotes. "Voici la «_chose_» qui m'a attaqué."
+	var $space_frenchquote = "&#160;";
+	# Space as thousand separator. "On compte 10_000 maisons sur cette liste."
+	var $space_thousand    = "&#160;";
+	# Space before a unit abreviation. "This 12_kg of matter costs 10_$."
+	var $space_unit        = "&#160;";
 	
 	# Expression of a space (breakable or not):
 	var $space = '(?: | |&nbsp;|&#0*160;|&#x0*[aA]0;)';
@@ -580,7 +566,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 
 	### Parser Implementation ###
 
-	function __construct($attr = SMARTYPANTS_ATTR) {
+	function __construct($attr = SMARTYPANTS_ATTR_DEFAULT) {
 	#
 	# Initialize a SmartyPantsTypographer_Parser with certain attributes.
 	#
