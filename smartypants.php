@@ -547,7 +547,7 @@ class SmartyPants_Parser {
 		$index = 0;
 		$tokens = array();
 
-		$match = '(?s:<!(?:--.*?--\s*)+>)|'.	# comment
+		$match = '(?s:<!--.*?-->)|'.	# comment
 				 '(?s:<\?.*?\?>)|'.				# processing instruction
 												# regular tags
 				 '(?:<[/!$]?[-a-zA-Z0-9:]+\b(?>[^"\'>]+|"[^"]*"|\'[^\']*\')*>)'; 
