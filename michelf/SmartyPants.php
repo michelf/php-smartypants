@@ -2,9 +2,9 @@
 #
 # SmartyPants  -  Smart typography for web sites
 #
-# PHP SmartyPants  
-# Copyright (c) 2004-2006 Michel Fortin
-# <http://www.michelf.com/>
+# PHP SmartyPants
+# Copyright (c) 2004-2013 Michel Fortin
+# <http://michelf.ca/>
 #
 # Original SmartyPants
 # Copyright (c) 2003-2004 John Gruber
@@ -13,12 +13,13 @@
 namespace michelf;
 
 
-const  SMARTYPANTS_VERSION  =  "1.5.1oo2"; # Unreleased
-const  SMARTYPANTSTYPOGRAPHER_VERSION  =  "1.0"; # Wed 28 Jun 2006
+const  SMARTYPANTSLIB_VERSION  = "1.6-beta1"; # Sun 23 Jan 2013
+const  SMARTYPANTS_VERSION  =  "1.5.1f"; # Sun 23 Jan 2013
+const  SMARTYPANTSTYPOGRAPHER_VERSION  =  "1.0.1"; # Sun 23 Jan 2013
 
 
 # SmartyPants will not alter the content of these tags:
-define( 'SMARTYPANTS_TAGS_TO_SKIP', 'pre|code|kbd|script|math');
+define( 'SMARTYPANTS_TAGS_TO_SKIP', 'pre|code|kbd|script|style|math');
 
 
 #
@@ -497,7 +498,7 @@ class SmartyPants {
 		$index = 0;
 		$tokens = array();
 
-		$match = '(?s:<!(?:--.*?--\s*)+>)|'.	# comment
+		$match = '(?s:<!--.*?-->)|'.	# comment
 				 '(?s:<\?.*?\?>)|'.				# processing instruction
 												# regular tags
 				 '(?:<[/!$]?[-a-zA-Z0-9:]+\b(?>[^"\'>]+|"[^"]*"|\'[^\']*\')*>)'; 
