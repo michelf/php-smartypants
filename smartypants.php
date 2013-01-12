@@ -4,7 +4,7 @@
 #
 # PHP SmartyPants  
 # Copyright (c) 2004-2013 Michel Fortin
-# <http://www.michelf.com/>
+# <http://michelf.ca/>
 #
 # Original SmartyPants
 # Copyright (c) 2003-2004 John Gruber
@@ -81,11 +81,11 @@ function SmartElipsis($text, $attr = null) {
 
 /*
 Plugin Name: SmartyPants
-Plugin URI: http://www.michelf.com/projects/php-smartypants/
+Plugin URI: http://michelf.ca/projects/php-smartypants/
 Description: SmartyPants is a web publishing utility that translates plain ASCII punctuation characters into &#8220;smart&#8221; typographic punctuation HTML entities. This plugin <strong>replace the default WordPress Texturize algorithm</strong> for the content and the title of your posts, the comments body and author name, and everywhere else Texturize normally apply. Based on the original Perl version by <a href="http://daringfireball.net/">John Gruber</a>.
 Version: 1.5.1f
 Author: Michel Fortin
-Author URI: http://www.michelf.com/
+Author URI: http://michelf.ca/
 */
 
 if (isset($wp_version)) {
@@ -705,7 +705,7 @@ Original SmartyPants by John Gruber
 <http://daringfireball.net/>
 
 PHP Port by Michel Fortin
-<http://www.michelf.com/>
+<http://michelf.ca/>
 
 
 Additional Credits
@@ -728,7 +728,7 @@ Copyright (c) 2003 John Gruber
 All rights reserved.
 
 Copyright (c) 2004-2013 Michel Fortin  
-<http://www.michelf.com>
+<http://michelf.ca>
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:

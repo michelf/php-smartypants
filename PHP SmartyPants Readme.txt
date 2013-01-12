@@ -4,7 +4,7 @@ PHP SmartyPants
 Version 1.5.1f - Sun 23 Jan 2013
 
 by Michel Fortin  
-<http://www.michelf.com/>
+<http://michelf.ca/>
 
 based on work by John Gruber  
 <http://daringfireball.net/>
@@ -370,7 +370,7 @@ Copyright and License
 ---------------------
 
 Copyright (c) 2005-2013 Michel Fortin  
-<http://www.michelf.com/>  
+<http://michelf.ca/>
 All rights reserved.
 
 Copyright (c) 2003-2004 John Gruber   
