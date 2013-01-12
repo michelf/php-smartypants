@@ -647,6 +647,9 @@ Version History
 *	Fixed handling of HTML comments to match latest HTML specs instead of
 	doing it the old SGML way.
 
+*	Lowered WordPress filtering priority to avoid clashing with the 
+	[caption] tag filter. Thanks to Mehdi Kabab for the fix.
+
 
 1.5.1oo (19 May 2006, unreleased)
 
