@@ -1,9 +1,9 @@
 PHP SmartyPants
 ===============
 
-Version 1.5.1oo - Fri 19 May 2006
+Version 1.5.1f - Sun 23 Jan 2013
 
-by Michel Fortin
+by Michel Fortin  
 <http://www.michelf.com/>
 
 based on work by John Gruber  
@@ -310,13 +310,13 @@ example text to illustrate.
 Version History
 ---------------
 
-Current:
+1.5.1f (23 Jan 2013):
 
 *	Lowered WordPress filtering priority to avoid clashing with the 
 	[caption] tag filter. Thanks to Mehdi Kabab for the fix.
 
 
-1.5.1oo (19 May 2006)
+1.5.1oo (19 May 2006, unreleased)
 
 *   Converted SmartyPants to a object-oriented design.
 
@@ -369,7 +369,7 @@ Current:
 Copyright and License
 ---------------------
 
-Copyright (c) 2005 Michel Fortin  
+Copyright (c) 2005-2013 Michel Fortin  
 <http://www.michelf.com/>  
 All rights reserved.
 

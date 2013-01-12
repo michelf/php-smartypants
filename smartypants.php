@@ -3,7 +3,7 @@
 # SmartyPants  -  Smart punctuation for web sites
 #
 # PHP SmartyPants  
-# Copyright (c) 2004-2006 Michel Fortin
+# Copyright (c) 2004-2013 Michel Fortin
 # <http://www.michelf.com/>
 #
 # Original SmartyPants
@@ -12,7 +12,7 @@
 #
 
 
-define( 'SMARTYPANTS_VERSION',  "1.5.1oo2" ); # Unreleased
+define( 'SMARTYPANTS_VERSION',  "1.5.1f" ); # Unreleased
 
 
 #
@@ -83,7 +83,7 @@ function SmartElipsis($text, $attr = null) {
 Plugin Name: SmartyPants
 Plugin URI: http://www.michelf.com/projects/php-smartypants/
 Description: SmartyPants is a web publishing utility that translates plain ASCII punctuation characters into &#8220;smart&#8221; typographic punctuation HTML entities. This plugin <strong>replace the default WordPress Texturize algorithm</strong> for the content and the title of your posts, the comments body and author name, and everywhere else Texturize normally apply. Based on the original Perl version by <a href="http://daringfireball.net/">John Gruber</a>.
-Version: 1.5.1oo
+Version: 1.5.1f
 Author: Michel Fortin
 Author URI: http://www.michelf.com/
 */
@@ -642,7 +642,13 @@ proper HTML entity for closing single-quotes (`&#8217;`) by hand.
 Version History
 ---------------
 
-1.5.1oo (19 May 2006)
+1.5.1f (23 Jan 2013)
+
+*	Fixed handling of HTML comments to match latest HTML specs instead of
+	doing it the old SGML way.
+
+
+1.5.1oo (19 May 2006, unreleased)
 
 *   Converted SmartyPants to a object-oriented design.
 
@@ -721,7 +727,7 @@ Copyright (c) 2003 John Gruber
 <http://daringfireball.net/>  
 All rights reserved.
 
-Copyright (c) 2004-2006 Michel Fortin  
+Copyright (c) 2004-2013 Michel Fortin  
 <http://www.michelf.com>
 
 Redistribution and use in source and binary forms, with or without
