@@ -153,49 +153,50 @@ class SmartyPants_Parser {
 	# e : ellipses
 	# w : convert &quot; entities to " for Dreamweaver users
 	#
-		if ($attr == "0") {
-			$this->do_nothing   = 1;
-		}
-		else if ($attr == "1") {
-			# Do everything, turn all options on.
-			$this->do_quotes    = 1;
-			$this->do_backticks = 1;
-			$this->do_dashes    = 1;
-			$this->do_ellipses  = 1;
-		}
-		else if ($attr == "2") {
-			# Do everything, turn all options on, use old school dash shorthand.
-			$this->do_quotes    = 1;
-			$this->do_backticks = 1;
-			$this->do_dashes    = 2;
-			$this->do_ellipses  = 1;
-		}
-		else if ($attr == "3") {
-			# Do everything, turn all options on, use inverted old school dash shorthand.
-			$this->do_quotes    = 1;
-			$this->do_backticks = 1;
-			$this->do_dashes    = 3;
-			$this->do_ellipses  = 1;
-		}
-		else if ($attr == "-1") {
-			# Special "stupefy" mode.
-			$this->do_stupefy   = 1;
-		}
-		else {
-			$chars = preg_split('//', $attr);
-			foreach ($chars as $c){
-				if      ($c == "q") { $this->do_quotes    = 1; }
-				else if ($c == "b") { $this->do_backticks = 1; }
-				else if ($c == "B") { $this->do_backticks = 2; }
-				else if ($c == "d") { $this->do_dashes    = 1; }
-				else if ($c == "D") { $this->do_dashes    = 2; }
-				else if ($c == "i") { $this->do_dashes    = 3; }
-				else if ($c == "e") { $this->do_ellipses  = 1; }
-				else if ($c == "w") { $this->convert_quot = 1; }
-				else {
-					# Unknown attribute option, ignore.
+		switch ($attr) {
+			case "0":
+				$this->do_nothing   = 1;
+				break;
+			case "1":
+				# Do everything, turn all options on.
+				$this->do_quotes    = 1;
+				$this->do_backticks = 1;
+				$this->do_dashes    = 1;
+				$this->do_ellipses  = 1;
+				break;
+			case "2":
+				$this->do_quotes    = 1;
+				$this->do_backticks = 1;
+				$this->do_dashes    = 2;
+				$this->do_ellipses  = 1;
+				break;
+			case "3":
+				# Do everything, turn all options on, use inverted old school dash shorthand.
+				$this->do_quotes    = 1;
+				$this->do_backticks = 1;
+				$this->do_dashes    = 3;
+				$this->do_ellipses  = 1;
+				break;
+			case "-1":
+				# Special "stupefy" mode.
+				$this->do_stupefy   = 1;
+				break;
+			default:
+				$chars = preg_split('//', $attr);
+				foreach ($chars as $c){
+					if      ($c == "q") { $this->do_quotes    = 1; }
+					else if ($c == "b") { $this->do_backticks = 1; }
+					else if ($c == "B") { $this->do_backticks = 2; }
+					else if ($c == "d") { $this->do_dashes    = 1; }
+					else if ($c == "D") { $this->do_dashes    = 2; }
+					else if ($c == "i") { $this->do_dashes    = 3; }
+					else if ($c == "e") { $this->do_ellipses  = 1; }
+					else if ($c == "w") { $this->convert_quot = 1; }
+					else {
+						# Unknown attribute option, ignore.
+					}
 				}
-			}
+				break;
 		}
 	}
 
