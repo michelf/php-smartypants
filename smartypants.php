@@ -26,7 +26,7 @@ define( 'SMARTYPANTSTYPOGRAPHER_VERSION',  "1.0.1" ); # Sun 23 Jan 2013
 #
 define( 'SMARTYPANTS_ATTR',    1 );
 
-# Openning and closing smart double-quotes.
+# Opening and closing smart double-quotes.
 define( 'SMARTYPANTS_SMART_DOUBLEQUOTE_OPEN',  "&#8220;" );
 define( 'SMARTYPANTS_SMART_DOUBLEQUOTE_CLOSE', "&#8221;" );
 
