@@ -537,7 +537,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	var $do_space_unit        = 0;
 	
 	# Smart quote characters:
-	# Openning and closing smart double-quotes.
+	# Opening and closing smart double-quotes.
 	var $smart_doublequote_open  = '&#8220;';
 	var $smart_doublequote_close = '&#8221;';
 	var $smart_singlequote_open  = '&#8216;';
