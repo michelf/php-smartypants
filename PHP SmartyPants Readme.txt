@@ -24,7 +24,7 @@ SmartyPants can also be invoked as a standalone PHP function.
 SmartyPants can perform the following transformations:
 
 *   Straight quotes (`"` and `'`) into "curly" quote HTML entities
-*   Backtick-style quotes (` ``like this'' `) into "curly" quote HTML
+*   Backtick-style quotes (``` ``like this'' ```) into "curly" quote HTML
     entities
 *   Dashes (`--` and `---`) into en- and em-dash entities
 *   Three consecutive dots (`...`) into an ellipsis entity
@@ -199,10 +199,10 @@ Or inside a Smarty template:
     Educates normal quote characters: (`"`) and (`'`).
 
 "b"
-    Educates ` ``backticks'' ` double quotes.
+    Educates ``` ``backticks'' ``` double quotes.
 
 "B"
-    Educates backticks-style double quotes and ` `single' ` quotes.
+    Educates backticks-style double quotes and `` `single' `` quotes.
 
 "d"
     Educates em-dashes.
