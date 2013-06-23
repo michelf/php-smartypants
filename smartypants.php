@@ -12,7 +12,7 @@
 #
 
 
-define( 'SMARTYPANTS_VERSION',  "1.5.1f" ); # Unreleased
+defined( 'SMARTYPANTS_VERSION' ) || define( 'SMARTYPANTS_VERSION',  "1.5.1f" ); # Unreleased
 
 
 #
@@ -23,16 +23,16 @@ define( 'SMARTYPANTS_VERSION',  "1.5.1f" ); # Unreleased
 #  3  ->  "--" for em-dashes; "---" for en-dashes  
 #  See docs for more configuration options.
 #
-define( 'SMARTYPANTS_ATTR',    1 );
+defined( 'SMARTYPANTS_ATTR' ) || define( 'SMARTYPANTS_ATTR',    1 );
 
 
 # SmartyPants will not alter the content of these tags:
-define( 'SMARTYPANTS_TAGS_TO_SKIP', 'pre|code|kbd|script|style|math');
+defined( 'SMARTYPANTS_TAGS_TO_SKIP' ) || define( 'SMARTYPANTS_TAGS_TO_SKIP', 'pre|code|kbd|script|style|math');
 
 
 ### Standard Function Interface ###
 
-define( 'SMARTYPANTS_PARSER_CLASS', 'SmartyPants_Parser' );
+defined( 'SMARTYPANTS_PARSER_CLASS' ) || define( 'SMARTYPANTS_PARSER_CLASS', 'SmartyPants_Parser' );
 
 function SmartyPants($text, $attr = SMARTYPANTS_ATTR) {
 #
