@@ -13,13 +13,19 @@
 namespace michelf;
 
 
-const  SMARTYPANTSLIB_VERSION  = "1.6-beta1"; # Sun 23 Jan 2013
-const  SMARTYPANTS_VERSION  =  "1.5.1f"; # Sun 23 Jan 2013
-const  SMARTYPANTSTYPOGRAPHER_VERSION  =  "1.0.1"; # Sun 23 Jan 2013
+### Pre-Configured SmartyPants Modes ###
 
+# SmartyPants does nothing at all
+const  SMARTYPANTS_ATTR_DO_NOTHING             =  0;
+# "--" for em-dashes; no en-dash support  
+const  SMARTYPANTS_ATTR_EM_DASH                =  1;
+# "---" for em-dashes; "--" for en-dashes  
+const  SMARTYPANTS_ATTR_LONG_EM_DASH_SHORT_EN  =  2;
+# "--" for em-dashes; "---" for en-dashes  
+const  SMARTYPANTS_ATTR_SHORT_EM_DASH_LONG_EN  =  3;
 
-# SmartyPants will not alter the content of these tags:
-define( 'SMARTYPANTS_TAGS_TO_SKIP', 'pre|code|kbd|script|style|math');
+# Default is SMARTYPANTS_ATTR_EM_DASH
+const  SMARTYPANTS_ATTR_DEFAULT  =  SMARTYPANTS_ATTR_EM_DASH;
 
 
 #
@@ -30,27 +36,12 @@ class SmartyPants {
 
 	### Version ###
 
-	const  SMARTYPANTS_VERSION  =  \michelf\SMARTYPANTS_VERSION;
-
-
-	### Pre-Configured Modes ###
-
-	# SmartyPants does nothing at all
-	const  SMARTYPANTS_ATTR_DO_NOTHING             =  0;
-	# "--" for em-dashes; no en-dash support  
-	const  SMARTYPANTS_ATTR_EM_DASH                =  1;
-	# "---" for em-dashes; "--" for en-dashes  
-	const  SMARTYPANTS_ATTR_LONG_EM_DASH_SHORT_EN  =  2;
-	# "--" for em-dashes; "---" for en-dashes  
-	const  SMARTYPANTS_ATTR_SHORT_EM_DASH_LONG_EN  =  3;
-
-	# Default is SMARTYPANTS_ATTR_EM_DASH
-	const  SMARTYPANTS_ATTR_DEFAULT  =  SMARTYPANTS_ATTR_EM_DASH;
+	const  SMARTYPANTSLIB_VERSION  =  "1.6.0-beta1";
 
 
 	### Standard Function Interface ###
 
-	static function defaultTransform($text, $attr = SMARTYPANTS_ATTR_DEFAULT) {
+	public static function defaultTransform($text, $attr = SMARTYPANTS_ATTR_DEFAULT) {
 	#
 	# Initialize the parser and return the result of its transform method.
 	# This will work fine for derived classes too.
@@ -73,19 +64,22 @@ class SmartyPants {
 
 	### Configuration Variables ###
 
+	# Partial regex for matching tags to skip
+	public $tags_to_skip = 'pre|code|kbd|script|style|math';
+
 	# Options to specify which transformations to make:
-	var $do_nothing   = 0; # disable all transforms
-	var $do_quotes    = 0;
-	var $do_backticks = 0; # 1 => double only, 2 => double & single
-	var $do_dashes    = 0; # 1, 2, or 3 for the three modes described above
-	var $do_ellipses  = 0;
-	var $do_stupefy   = 0;
-	var $convert_quot = 0; # should we translate &quot; entities into normal quotes?
+	public $do_nothing   = 0; # disable all transforms
+	public $do_quotes    = 0;
+	public $do_backticks = 0; # 1 => double only, 2 => double & single
+	public $do_dashes    = 0; # 1, 2, or 3 for the three modes described above
+	public $do_ellipses  = 0;
+	public $do_stupefy   = 0;
+	public $convert_quot = 0; # should we translate &quot; entities into normal quotes?
 
 
 	### Parser Implementation ###
 
-	function __construct($attr = SMARTYPANTS_ATTR_DEFAULT) {
+	public function __construct($attr = SMARTYPANTS_ATTR_DEFAULT) {
 	#
 	# Initialize a parser with certain attributes.
 	#
@@ -150,7 +144,7 @@ class SmartyPants {
 		}
 	}
 
-	function transform($text) {
+	public function transform($text) {
 
 		if ($this->do_nothing) {
 			return $text;
@@ -171,7 +165,7 @@ class SmartyPants {
 			if ($cur_token[0] == "tag") {
 				# Don't mess with quotes inside tags.
 				$result .= $cur_token[1];
-				if (preg_match('@<(/?)(?:'.SMARTYPANTS_TAGS_TO_SKIP.')[\s>]@', $cur_token[1], $matches)) {
+				if (preg_match('@<(/?)(?:'.$this->tags_to_skip.')[\s>]@', $cur_token[1], $matches)) {
 					$in_pre = isset($matches[1]) && $matches[1] == '/' ? 0 : 1;
 				}
 			} else {
@@ -189,7 +183,7 @@ class SmartyPants {
 	}
 
 
-	function educate($t, $prev_token_last_char) {
+	protected function educate($t, $prev_token_last_char) {
 		$t = $this->processEscapes($t);
 
 		if ($this->convert_quot) {
@@ -241,7 +235,7 @@ class SmartyPants {
 	}
 
 
-	function educateQuotes($_) {
+	protected function educateQuotes($_) {
 	#
 	#   Parameter:  String.
 	#
@@ -330,7 +324,7 @@ class SmartyPants {
 	}
 
 
-	function educateBackticks($_) {
+	protected function educateBackticks($_) {
 	#
 	#   Parameter:  String.
 	#   Returns:    The string, with ``backticks'' -style double quotes
@@ -346,7 +340,7 @@ class SmartyPants {
 	}
 
 
-	function educateSingleBackticks($_) {
+	protected function educateSingleBackticks($_) {
 	#
 	#   Parameter:  String.
 	#   Returns:    The string, with `backticks' -style single quotes
@@ -362,7 +356,7 @@ class SmartyPants {
 	}
 
 
-	function educateDashes($_) {
+	protected function educateDashes($_) {
 	#
 	#   Parameter:  String.
 	#
@@ -375,7 +369,7 @@ class SmartyPants {
 	}
 
 
-	function educateDashesOldSchool($_) {
+	protected function educateDashesOldSchool($_) {
 	#
 	#   Parameter:  String.
 	#
@@ -391,7 +385,7 @@ class SmartyPants {
 	}
 
 
-	function educateDashesOldSchoolInverted($_) {
+	protected function educateDashesOldSchoolInverted($_) {
 	#
 	#   Parameter:  String.
 	#
@@ -414,7 +408,7 @@ class SmartyPants {
 	}
 
 
-	function educateEllipses($_) {
+	protected function educateEllipses($_) {
 	#
 	#   Parameter:  String.
 	#   Returns:    The string, with each instance of "..." translated to
@@ -430,7 +424,7 @@ class SmartyPants {
 	}
 
 
-	function stupefyEntities($_) {
+	protected function stupefyEntities($_) {
 	#
 	#   Parameter:  String.
 	#   Returns:    The string, with each SmartyPants HTML entity translated to
@@ -456,7 +450,7 @@ class SmartyPants {
 	}
 
 
-	function processEscapes($_) {
+	protected function processEscapes($_) {
 	#
 	#   Parameter:  String.
 	#   Returns:    The string, with after processing the following backslash
@@ -480,7 +474,7 @@ class SmartyPants {
 	}
 
 
-	function tokenizeHTML($str) {
+	protected function tokenizeHTML($str) {
 	#
 	#   Parameter:  String containing HTML markup.
 	#   Returns:    An array of the tokens comprising the input
@@ -525,49 +519,49 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	### Configuration Variables ###
 
 	# Options to specify which transformations to make:
-	var $do_comma_quotes      = 0;
-	var $do_guillemets        = 0;
-	var $do_space_emdash      = 0;
-	var $do_space_endash      = 0;
-	var $do_space_colon       = 0;
-	var $do_space_semicolon   = 0;
-	var $do_space_marks       = 0;
-	var $do_space_frenchquote = 0;
-	var $do_space_thousand    = 0;
-	var $do_space_unit        = 0;
+	public $do_comma_quotes      = 0;
+	public $do_guillemets        = 0;
+	public $do_space_emdash      = 0;
+	public $do_space_endash      = 0;
+	public $do_space_colon       = 0;
+	public $do_space_semicolon   = 0;
+	public $do_space_marks       = 0;
+	public $do_space_frenchquote = 0;
+	public $do_space_thousand    = 0;
+	public $do_space_unit        = 0;
 	
 	# Smart quote characters:
 	# Opening and closing smart double-quotes.
-	var $smart_doublequote_open  = '&#8220;';
-	var $smart_doublequote_close = '&#8221;';
-	var $smart_singlequote_open  = '&#8216;';
-	var $smart_singlequote_close = '&#8217;'; # Also apostrophe.
+	public $smart_doublequote_open  = '&#8220;';
+	public $smart_doublequote_close = '&#8221;';
+	public $smart_singlequote_open  = '&#8216;';
+	public $smart_singlequote_close = '&#8217;'; # Also apostrophe.
 
 	# Space characters for different places:
 	# Space around em-dashes.  "He_—_or she_—_should change that."
-	var $space_emdash      = " ";
+	public $space_emdash      = " ";
 	# Space around en-dashes.  "He_–_or she_–_should change that."
-	var $space_endash      = " ";
+	public $space_endash      = " ";
 	# Space before a colon. "He said_: here it is."
-	var $space_colon       = "&#160;";
+	public $space_colon       = "&#160;";
 	# Space before a semicolon. "That's what I said_; that's what he said."
-	var $space_semicolon   = "&#160;";
+	public $space_semicolon   = "&#160;";
 	# Space before a question mark and an exclamation mark: "¡_Holà_! What_?"
-	var $space_marks       = "&#160;";
+	public $space_marks       = "&#160;";
 	# Space inside french quotes. "Voici la «_chose_» qui m'a attaqué."
-	var $space_frenchquote = "&#160;";
+	public $space_frenchquote = "&#160;";
 	# Space as thousand separator. "On compte 10_000 maisons sur cette liste."
-	var $space_thousand    = "&#160;";
+	public $space_thousand    = "&#160;";
 	# Space before a unit abreviation. "This 12_kg of matter costs 10_$."
-	var $space_unit        = "&#160;";
+	public $space_unit        = "&#160;";
 	
 	# Expression of a space (breakable or not):
-	var $space = '(?: | |&nbsp;|&#0*160;|&#x0*[aA]0;)';
+	public $space = '(?: | |&nbsp;|&#0*160;|&#x0*[aA]0;)';
 
 
 	### Parser Implementation ###
 
-	function __construct($attr = SMARTYPANTS_ATTR_DEFAULT) {
+	public function __construct($attr = SMARTYPANTS_ATTR_DEFAULT) {
 	#
 	# Initialize a SmartyPantsTypographer_Parser with certain attributes.
 	#
@@ -671,7 +665,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function educateQuotes($_) {
+	protected function educateQuotes($_) {
 	#
 	#   Parameter:  String.
 	#
@@ -764,7 +758,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function educateCommaQuotes($_) {
+	protected function educateCommaQuotes($_) {
 	#
 	#   Parameter:  String.
 	#   Returns:    The string, with ,,comma,, -style double quotes
@@ -781,7 +775,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function educateGuillemets($_) {
+	protected function educateGuillemets($_) {
 	#
 	#   Parameter:  String.
 	#   Returns:    The string, with << guillemets >> -style quotes
@@ -796,7 +790,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function spaceFrenchQuotes($_) {
+	protected function spaceFrenchQuotes($_) {
 	#
 	#	Parameters: String, replacement character, and forcing flag.
 	#	Returns:    The string, with appropriates spaces replaced 
@@ -821,7 +815,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function spaceColon($_) {
+	protected function spaceColon($_) {
 	#
 	#	Parameters: String, replacement character, and forcing flag.
 	#	Returns:    The string, with appropriates spaces replaced 
@@ -839,7 +833,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function spaceSemicolon($_) {
+	protected function spaceSemicolon($_) {
 	#
 	#	Parameters: String, replacement character, and forcing flag.
 	#	Returns:    The string, with appropriates spaces replaced 
@@ -860,7 +854,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function spaceMarks($_) {
+	protected function spaceMarks($_) {
 	#
 	#	Parameters: String, replacement character, and forcing flag.
 	#	Returns:    The string, with appropriates spaces replaced 
@@ -883,7 +877,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function spaceEmDash($_) {
+	protected function spaceEmDash($_) {
 	#
 	#	Parameters: String, two replacement characters separated by a hyphen (`-`),
 	#				and forcing flag.
@@ -902,7 +896,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 	
 	
-	function spaceEnDash($_) {
+	protected function spaceEnDash($_) {
 	#
 	#	Parameters: String, two replacement characters separated by a hyphen (`-`),
 	#				and forcing flag.
@@ -921,7 +915,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function spaceThousandSeparator($_) {
+	protected function spaceThousandSeparator($_) {
 	#
 	#	Parameters: String, replacement character, and forcing flag.
 	#	Returns:    The string, with appropriates spaces replaced 
@@ -936,7 +930,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	var $units = '
+	protected $units = '
 		### Metric units (with prefixes)
 		(?:
 			p |
@@ -962,7 +956,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 		%|pt|pi|M?px|em|en|gal|lb|[NSEOW]|[NS][EOW]|ha|mbar
 		'; //x
 
-	function spaceUnit($_) {
+	protected function spaceUnit($_) {
 	#
 	#	Parameters: String, replacement character, and forcing flag.
 	#	Returns:    The string, with appropriates spaces replaced
@@ -985,7 +979,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function spaceAbbr($_) {
+	protected function spaceAbbr($_) {
 	#
 	#	Parameters: String, replacement character, and forcing flag.
 	#	Returns:    The string, with appropriates spaces replaced
@@ -1004,7 +998,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function stupefyEntities($_) {
+	protected function stupefyEntities($_) {
 	#
 	#   Adding angle quotes and lower quotes to SmartyPants's stupefy mode.
 	#
@@ -1016,7 +1010,7 @@ class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
 	}
 
 
-	function processEscapes($_) {
+	protected function processEscapes($_) {
 	#
 	#   Adding a few more escapes to SmartyPants's escapes:
 	#

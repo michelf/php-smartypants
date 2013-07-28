@@ -1,7 +1,7 @@
 PHP SmartyPants Lib
 ===================
 
-Version 1.6-beta1 - Sun 23 Jan 2013
+Version 1.6.0-beta1 - Sun 23 Jan 2013
 
 by Michel Fortin  
 <http://michelf.ca/>
