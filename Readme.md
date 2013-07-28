@@ -1,7 +1,7 @@
-PHP SmartyPants Lib
-===================
+PHP SmartyPants
+===============
 
-Version 1.6.0-beta1 - Sun 23 Jan 2013
+PHP SmartyPants Lib 1.6.0-beta1 - Sun 23 Jan 2013
 
 by Michel Fortin  
 <http://michelf.ca/>
@@ -13,25 +13,33 @@ Original SmartyPants by John Gruber
 Introduction
 ------------
 
-This is a special version of PHP SmartyPants with extra features. See 
-<http://www.michelf.com/projects/php-smartypants/typographer/> for 
-details.
+This is a library package that includes the PHP SmartyPants and its
+sibling PHP SmartyPants Typographer with additional features.
 
-PHP SmartyPants is a free web publishing plug-in for WordPress and 
-Smarty template engine that easily translates plain ASCII punctuation 
-characters into "smart" typographic punctuation HTML entities. 
-SmartyPants can also be invoked as a standalone PHP function.
+SmartyPants is a free web typography prettifyier tool for web writers. It
+easily translates plain ASCII punctuation characters into "smart" typographic 
+punctuation HTML entities.
 
 PHP SmartyPants is a port to PHP of the original SmartyPants written 
-in Perl by John Gruber.
+in Perl by John Gruber. And the Typographer
 
 SmartyPants can perform the following transformations:
 
-*   Straight quotes (`"` and `'`) into "curly" quote HTML entities
-*   Backtick-style quotes (` ``like this'' `) into "curly" quote HTML
+*   Straight quotes (`"` and `'`) into “curly” quote HTML entities
+*   Backtick-style quotes (` ``like this'' `) into “curly” quote HTML
     entities
 *   Dashes (`--` and `---`) into en- and em-dash entities
 *   Three consecutive dots (`...`) into an ellipsis entity
+
+SmartyPants Typographer can perform those additional transformations:
+
+*	French guillements done using (`<<` and `>>`) into true « guillemets »
+	HTML entities.
+*	Replace existing spaces with non-break spaces around punctuation marks 
+	where appropriate, can also add or remove them if configured to.
+*	Replace existing spaces with non-break spaces for spaces used as 
+	a thousand separator and between a number and the unit symbol that 
+	follows it (for most common units).
 
 This means you can write, edit, and save using plain old ASCII straight 
 quotes, plain dashes, and plain dots, but your published posts (and 
@@ -80,86 +88,82 @@ looks like:
 Installation and Requirement
 ----------------------------
 
-PHP SmartyPants require PHP version 4.0.5 or later.
+This library package requires PHP 5.3 or later.
+
+Note: The older plugin/library hybrid package for PHP SmartyPants and
+PHP SmartyPants Typographer is still maintained and will work with PHP 4.0.5 
+and later.
 
 
-### WordPress ###
+Usage
+-----
 
-WordPress already include a filter called "Texturize" with the same 
-goal as SmartyPants. You could still find some usefulness to 
-PHP SmartyPants if you are not happy enough with the standard algorithm.
+This library package is meant to be used with class autoloading. For autoloading 
+to work, your project needs have setup a PSR-0-compatible autoloader. See the 
+included Readme.php file for a minimal autoloader setup. (If you don't want to 
+use autoloading you can do a classic `require_once` to manually include the 
+files prior use instead.)
 
-PHP SmartyPants works with [WordPress][wp], version 1.2 or later.
+With class autoloading in place, putting the 'Michelf' folder in your 
+include path should be enough for this to work:
 
-[wp]: http://wordpress.org/
+	use \Michelf\SmartyPants;
+	$html_output = SmartyPants::defaultTransform($html_input);
 
-1.  To use PHP SmartyPants with WordPress, place the "smartypants.php" 
-    file in the "plugins" folder. This folder is hidden inside 
-    "wp-content" at the root of your site:
+SmartyPants Typographer is also available the same way:
 
-        (site home)/wp-content/plugins/smartypants.php
+	use \Michelf\SmartyPantsTypographer;
+	$html_output = SmartyPantsTypographer::defaultTransform($html_input);
 
-2.  Activate the plugin with the administrative interface of WordPress. 
-    In the "Plugins" section you will now find SmartyPants. To activate 
-    the plugin, click on the "Activate" button on the same line than 
-    SmartyPants. Your entries will now be filtered by PHP SmartyPants.
+If you are using PHP SmartyPants with another text filter function that 
+generates HTML such as Markdown, you should filter the text *after* the 
+`transform` function call. This is an example with [PHP Markdown][pmd]:
 
-Note: It is not possible at this time to apply a different set of 
-filters to different entries. All your entries will be filtered by 
-PHP SmartyPants if the plugin is active. This is currently a limitation 
-of WordPress.
+	use \Michelf\Markdown, \Michelf\SmartyPants;
+	$my_html = Markdown::defaultTransform($my_text);
+	$my_html = SmartyPants::defaultTransform($my_html);
 
+To learn more about configuration options, see the full list of
+[configuration variables].
 
-### In your programs ###
-
-You can use PHP SmartyPants easily in your current PHP program. Simply 
-include the file and then call the `SmartyPants` function on the text 
-you want to convert:
-
-	include_once "smartypants.php";
-	$my_text = SmartyPants($my_text);
-
-
-### With Smarty ###
-
-If your program use the [Smarty][sm] template engine, PHP SmartyPants 
-can now be used as a modifier for your templates. Rename 
-"smartypants.php" to "modifier.smartypants.php" and put it in your 
-smarty plugins folder.
-
-[sm]: http://smarty.php.net/
+ [configuration variables]: http://michelf.ca/projects/php-smartypants/configuration/
+ [pmd]: http://michelf.ca/projects/php-markdown/
 
 
 Options and Configuration
 -------------------------
 
-Settings are specified by editing the value of the `$smartypants_attr`
-variable in the "smartypants.php" file. For users of the Smarty template 
-engine, the "smartypants" modifier also takes an optional attribute where 
-you can specify configuration options, like this: 
-`{$var|smartypants:1}` (where "1" is the configuration option).
+To change the default behaviour, you can pass a second argument to the
+`defaultTransform` function with a configuration string. You can also 
+instantiate a parser object directly with the configuration string and then
+call its `transform` method:
+
+	$my_html = SmartyPants::defaultTransform($my_html, 'qBD');
+
+	$parser = new SmartyPants('qBD');
+	$my_html = $parser->transform($my_html);
 
 Numeric values are the easiest way to configure SmartyPants's behavior:
 
 "0"
-    Suppress all transformations. (Do nothing.)
+:   Suppress all transformations. (Do nothing.)
 
 "1"
-    Performs default SmartyPants transformations: quotes (including
+:   Performs default SmartyPants transformations: quotes (including
     backticks-style), em-dashes, and ellipses. `--` (dash dash) is
     used to signify an em-dash; there is no support for en-dashes.
 
 "2"
-    Same as smarty_pants="1", except that it uses the old-school
+:   Same as smarty_pants="1", except that it uses the old-school
     typewriter shorthand for dashes: `--` (dash dash) for en-dashes,
     `---` (dash dash dash) for em-dashes.
 
 "3"
-    Same as smarty_pants="2", but inverts the shorthand for dashes: `--`
+:   Same as smarty_pants="2", but inverts the shorthand for dashes: `--`
     (dash dash) for em-dashes, and `---` (dash dash dash) for en-dashes.
 
 "-1"
-    Stupefy mode. Reverses the SmartyPants transformation process,
+:   Stupefy mode. Reverses the SmartyPants transformation process,
     turning the HTML entities produced by SmartyPants into their ASCII
     equivalents. E.g. `&#8220;` is turned into a simple double-quote
     (`"`), `&#8212;` is turned into two dashes, etc. This is useful if you
@@ -167,43 +171,39 @@ Numeric values are the easiest way to configure SmartyPants's behavior:
     RSS feeds.
 
 The following single-character attribute values can be combined to
-toggle individual transformations from within the smarty_pants
-attribute. For example, to educate normal quotes and em-dashes, but not
+toggle individual transformations from within the configuration parameter.
+For example, to educate normal quotes and em-dashes, but not
 ellipses or backticks-style quotes:
 
-    $smartypants_attr = "qd";
-
-Or inside a Smarty template:
-
-    {$var|smartypants:"qd"}
+    $my_html = SmartyPants::defaultTransform($my_html, "qd");
 
 "q"
-    Educates normal quote characters: (`"`) and (`'`).
+:   Educates normal quote characters: (`"`) and (`'`).
 
 "b"
-    Educates ` ``backticks'' ` double quotes.
+:   Educates ` ``backticks'' ` double quotes.
 
 "B"
-    Educates backticks-style double quotes and ` `single' ` quotes.
+:   Educates backticks-style double quotes and ` `single' ` quotes.
 
 "d"
-    Educates em-dashes.
+:   Educates em-dashes.
 
 "D"
-    Educates em-dashes and en-dashes, using old-school typewriter
+:   Educates em-dashes and en-dashes, using old-school typewriter
     shorthand: (dash dash) for en-dashes, (dash dash dash) for
     em-dashes.
 
 "i"
-    Educates em-dashes and en-dashes, using inverted old-school
+:   Educates em-dashes and en-dashes, using inverted old-school
     typewriter shorthand: (dash dash) for em-dashes, (dash dash dash)
     for en-dashes.
 
 "e"
-    Educates ellipses.
+:   Educates ellipses.
 
 "w"
-    Translates any instance of `&quot;` into a normal double-quote
+:   Translates any instance of `&quot;` into a normal double-quote
     character. This should be of no interest to most people, but of
     particular interest to anyone who writes their posts using
     Dreamweaver, as Dreamweaver inexplicably uses this entity to
@@ -215,15 +215,10 @@ Or inside a Smarty template:
     "b"). Thus, if you wish to apply all SmartyPants transformations
     (quotes, en- and em-dashes, and ellipses) and also translate
     `&quot;` entities into regular quotes so SmartyPants can educate
-    them, you should set the SMARTYPANTS_ATTR constant at the top of 
-    the file to:
+    them, you should set the configuration argument when calling the 
+	function:
 
-        define( 'SMARTYPANTS_ATTR',    "qDew" );
-
-    Inside a Smarty template, you could also pass the string as a 
-    parameter:
-
-        {$var|smartypants:"qDew"}
+        $my_html = SmartyPants::defaultTransform($my_html, "qDew");
 
 
 ### Algorithmic Shortcomings ###
@@ -241,13 +236,27 @@ proper HTML entity for closing single-quotes (`&#8217;` or `&rsquo;`) by
 hand.
 
 
+Public API and Versioning Policy
+---------------------------------
+
+Version numbers are of the form *major*.*minor*.*patch*.
+
+The public API of PHP Markdown consist of the two parser classes `SmartyPants`
+and `SmartyPantsTypoGrapher`, their constructors, the `transform` and 
+`defaultTransform` functions and their configuration variables. The public API 
+is stable for a given major version number. It might get additions when the 
+minor version number increments.
+
+Public and protected members are public API.
+
+
 Bugs
 ----
 
 To file bug reports or feature requests (other than topics listed in the
 Caveats section above) please send email to:
 
-<michel.fortin@michelf.com>
+<michel.fortin@michelf.ca>
 
 If the bug involves quotes being curled the wrong way, please send
 example text to illustrate.
@@ -256,7 +265,7 @@ example text to illustrate.
 Version History
 ---------------
 
-Lib 1.6-beta1 (23 Jan 2013)
+PHP SmartyPants Lib 1.6.0-beta1 (23 Jan 2013)
 
 Typographer 1.0.1 (23 Jan 2013)
 
@@ -331,8 +340,8 @@ Copyright (c) 2005-2013 Michel Fortin
 <http://michelf.ca/>
 All rights reserved.
 
-Copyright (c) 2003-2004 John Gruber   
-<http://daringfireball.net/>   
+Copyright (c) 2003-2004 John Gruber
+<http://daringfireball.net/>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

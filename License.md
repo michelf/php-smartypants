@@ -1,4 +1,4 @@
-PHP SmartyPants & Typographer  
+PHP SmartyPants Lib  
 Copyright (c) 2005-2013 Michel Fortin  
 <http://michelf.ca/>  
 All rights reserved.
