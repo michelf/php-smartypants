@@ -21,7 +21,7 @@ easily translates plain ASCII punctuation characters into "smart" typographic
 punctuation HTML entities.
 
 PHP SmartyPants is a port to PHP of the original SmartyPants written 
-in Perl by John Gruber. And the Typographer
+in Perl by John Gruber.
 
 SmartyPants can perform the following transformations:
 
@@ -43,8 +43,8 @@ SmartyPants Typographer can perform those additional transformations:
 
 This means you can write, edit, and save using plain old ASCII straight 
 quotes, plain dashes, and plain dots, but your published posts (and 
-final HTML output) will appear with smart quotes, em-dashes, and proper 
-ellipses.
+final HTML output) will appear with smart quotes, em-dashes, proper
+ellipses, and proper no-break spaces (with Typographer).
 
 SmartyPants does not modify characters within `<pre>`, `<code>`,
 `<kbd>`, or `<script>` tag blocks. Typically, these tags are used to
@@ -91,8 +91,7 @@ Installation and Requirement
 This library package requires PHP 5.3 or later.
 
 Note: The older plugin/library hybrid package for PHP SmartyPants and
-PHP SmartyPants Typographer is still maintained and will work with PHP 4.0.5 
-and later.
+PHP SmartyPants Typographer is still will work with PHP 4.0.5 and later.
 
 
 Usage
@@ -242,12 +241,15 @@ Public API and Versioning Policy
 Version numbers are of the form *major*.*minor*.*patch*.
 
 The public API of PHP Markdown consist of the two parser classes `SmartyPants`
-and `SmartyPantsTypoGrapher`, their constructors, the `transform` and 
-`defaultTransform` functions and their configuration variables. The public API 
-is stable for a given major version number. It might get additions when the 
-minor version number increments.
+and `SmartyPantsTypographer`, their constructors, the `transform` and
+`defaultTransform` functions. The public API is stable for a given major 
+version number. It might get additions when the minor version number increments.
 
-Public and protected members are public API.
+Public members are the public API. Protected members are not: while subclassing 
+the parser might be useful in some case, generally its done to change how 
+things works, most often in a way that requires specific knowleadge of the 
+internals. I don't want to discourage such hacks, hence why most members are
+protected, but I can't guarenty that new versions change the internals.
 
 
 Bugs
