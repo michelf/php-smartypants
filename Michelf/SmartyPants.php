@@ -10,7 +10,7 @@
 # Copyright (c) 2003-2004 John Gruber
 # <http://daringfireball.net/>
 #
-namespace michelf;
+namespace Michelf;
 
 
 ### Pre-Configured SmartyPants Modes ###
@@ -514,7 +514,7 @@ class SmartyPants {
 #
 # SmartyPants Typographer Parser Class
 #
-class _SmartyPantsTypographer_TmpImpl extends \michelf\SmartyPants {
+class _SmartyPantsTypographer_TmpImpl extends \Michelf\SmartyPants {
 
 	### Configuration Variables ###
 
