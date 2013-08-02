@@ -1029,6 +1029,3 @@ class _SmartyPantsTypographer_TmpImpl extends \Michelf\SmartyPants {
 		return $_;
 	}
 }
-
-
-?>

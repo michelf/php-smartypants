@@ -38,5 +38,3 @@ class SmartyPantsTypographer extends \Michelf\_SmartyPantsTypographer_TmpImpl {
 	# class. See note above.
 
 }
-
-?>
