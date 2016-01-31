@@ -36,7 +36,7 @@ class SmartyPants {
 
 	### Version ###
 
-	const  SMARTYPANTSLIB_VERSION  =  "1.6.0-beta1";
+	const  SMARTYPANTSLIB_VERSION  =  "1.6.0-beta2";
 
 
 	### Standard Function Interface ###
@@ -76,6 +76,11 @@ class SmartyPants {
 	protected $do_stupefy   = 0;
 	protected $convert_quot = 0; # should we translate &quot; entities into normal quotes?
 
+	protected $double_quote_open =  '&#8220;';
+	protected $double_quote_close = '&#8221;';
+	protected $single_quote_open =  '&#8216;';
+	protected $single_quote_close = '&#8217;';
+
 
 	### Parser Implementation ###
 
@@ -97,6 +102,7 @@ class SmartyPants {
 	# i : inverted old school dashes
 	# e : ellipses
 	# w : convert &quot; entities to " for Dreamweaver users
+	# G : use German quotes („like this“)
 	#
 		if ($attr == "0") {
 			$this->do_nothing   = 1;
@@ -137,6 +143,13 @@ class SmartyPants {
 				else if ($c == "i") { $this->do_dashes    = 3; }
 				else if ($c == "e") { $this->do_ellipses  = 1; }
 				else if ($c == "w") { $this->convert_quot = 1; }
+				else if ($c == "G") {
+					// use German quotes
+					$this->double_quote_open = '&#8222;';
+					$this->double_quote_close =   '&#8221;';
+					$this->single_quote_open = '&#8218;';
+					$this->single_quote_close =   '&#8217;';
+				}
 				else {
 					# Unknown attribute option, ignore.
 				}
@@ -208,19 +221,19 @@ class SmartyPants {
 			if ($t == "'") {
 				# Special case: single-character ' token
 				if (preg_match('/\S/', $prev_token_last_char)) {
-					$t = "&#8217;";
+					$t = $this->single_quote_close;
 				}
 				else {
-					$t = "&#8216;";
+					$t = $this->single_quote_open;
 				}
 			}
 			else if ($t == '"') {
 				# Special case: single-character " token
 				if (preg_match('/\S/', $prev_token_last_char)) {
-					$t = "&#8221;";
+					$t = $this->double_quote_close;
 				}
 				else {
-					$t = "&#8220;";
+					$t = $this->double_quote_open;
 				}
 			}
 			else {
@@ -252,17 +265,17 @@ class SmartyPants {
 		# followed by punctuation at a non-word-break. Close the quotes by brute force:
 		$_ = preg_replace(
 			array("/^'(?=$punct_class\\B)/", "/^\"(?=$punct_class\\B)/"),
-			array('&#8217;',                 '&#8221;'), $_);
+			array($this->single_quote_close, $this->double_quote_close), $_);
 
 
 		# Special case for double sets of quotes, e.g.:
 		#   <p>He said, "'Quoted' words in a larger quote."</p>
 		$_ = preg_replace(
 			array("/\"'(?=\w)/",    "/'\"(?=\w)/"),
-			array('&#8220;&#8216;', '&#8216;&#8220;'), $_);
+			array($this->double_quote_open.$this->single_quote_open, $this->single_quote_open.$this->double_quote_open), $_);
 
 		# Special case for decade abbreviations (the '80s):
-		$_ = preg_replace("/'(?=\\d{2}s)/", '&#8217;', $_);
+		$_ = preg_replace("/'(?=\\d{2}s)/", $this->single_quote_close, $_);
 
 		$close_class = '[^\ \t\r\n\[\{\(\-]';
 		$dec_dashes = '&\#8211;|&\#8212;';
@@ -279,7 +292,7 @@ class SmartyPants {
 			)
 			'                   # the quote
 			(?=\\w)              # followed by a word character
-			}x", '\1&#8216;', $_);
+		}x", '\1'.$this->single_quote_open, $_);
 		# Single closing quotes:
 		$_ = preg_replace("{
 			($close_class)?
@@ -289,10 +302,10 @@ class SmartyPants {
 			)               # char or an 's' at a word ending position. This
 							# is a special case to handle something like:
 							# \"<i>Custer</i>'s Last Stand.\"
-			}xi", '\1&#8217;', $_);
+			}xi", '\1'.$this->single_quote_close, $_);
 
 		# Any remaining single quotes should be opening ones:
-		$_ = str_replace("'", '&#8216;', $_);
+		$_ = str_replace("'", $this->single_quote_open, $_);
 
 
 		# Get most opening double quotes:
@@ -307,7 +320,7 @@ class SmartyPants {
 			)
 			\"                   # the quote
 			(?=\\w)              # followed by a word character
-			}x", '\1&#8220;', $_);
+		}x", '\1'.$this->double_quote_open, $_);
 
 		# Double closing quotes:
 		$_ = preg_replace("{
@@ -315,10 +328,10 @@ class SmartyPants {
 			\"
 			(?(1)|(?=\\s))   # If $1 captured, then do nothing;
 							   # if not, then make sure the next char is whitespace.
-			}x", '\1&#8221;', $_);
+			}x", '\1'.$this->double_quote_close, $_);
 
 		# Any remaining quotes should be opening ones.
-		$_ = str_replace('"', '&#8220;', $_);
+		$_ = str_replace('"', $this->double_quote_open, $_);
 
 		return $_;
 	}
@@ -335,7 +348,7 @@ class SmartyPants {
 	#
 
 		$_ = str_replace(array("``",       "''",),
-						 array('&#8220;', '&#8221;'), $_);
+						 array($this->double_quote_open, $this->double_quote_close), $_);
 		return $_;
 	}
 
@@ -351,7 +364,7 @@ class SmartyPants {
 	#
 
 		$_ = str_replace(array("`",       "'",),
-						 array('&#8216;', '&#8217;'), $_);
+						 array($this->single_quote_open, $this->single_quote_close), $_);
 		return $_;
 	}
 
@@ -439,10 +452,10 @@ class SmartyPants {
 						 array('-',       '--'), $_);
 
 		# single quote         open       close
-		$_ = str_replace(array('&#8216;', '&#8217;'), "'", $_);
+		$_ = str_replace(array($this->single_quote_open, $this->single_quote_close), "'", $_);
 
 		# double quote         open       close
-		$_ = str_replace(array('&#8220;', '&#8221;'), '"', $_);
+		$_ = str_replace(array($this->double_quote_open, $this->double_quote_close), '"', $_);
 
 		$_ = str_replace('&#8230;', '...', $_); # ellipsis
 
@@ -582,6 +595,7 @@ class _SmartyPantsTypographer_TmpImpl extends \Michelf\SmartyPants {
 	# i -> inverted old school dashes
 	# e -> ellipses
 	# w -> convert &quot; entities to " for Dreamweaver users
+	# G -> use German quotes („like this“)
 	#
 	# Spacing:
 	# : -> colon spacing +-
@@ -629,6 +643,12 @@ class _SmartyPantsTypographer_TmpImpl extends \Michelf\SmartyPants {
 				else if ($c == "f") { $current =& $this->do_space_frenchquote; }
 				else if ($c == "t") { $current =& $this->do_space_thousand; }
 				else if ($c == "u") { $current =& $this->do_space_unit; }
+				else if ($c == "G") {
+					$this->smart_doublequote_open  = '&#8222;';
+					$this->smart_doublequote_close = '&#8221;';
+					$this->smart_singlequote_open  = '&#8218;';
+					$this->smart_singlequote_close = '&#8217;';
+				}
 				else if ($c == "+") {
 					$current = 2;
 					unset($current);
