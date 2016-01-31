@@ -218,6 +218,9 @@ ellipses or backticks-style quotes:
 	function:
 
         $my_html = SmartyPants::defaultTransform($my_html, "qDew");
+        
+"G"
+:   Use „German“ quotes instead of "English" quotes.
 
 
 ### Algorithmic Shortcomings ###
