@@ -4,11 +4,11 @@
 #
 # PHP SmartyPants & Typographer  
 # Copyright (c) 2004-2013 Michel Fortin
-# <http://michelf.ca/>
+# <https://michelf.ca/>
 #
 # Original SmartyPants
 # Copyright (c) 2003-2004 John Gruber
-# <http://daringfireball.net/>
+# <https://daringfireball.net/>
 #
 namespace Michelf;
 

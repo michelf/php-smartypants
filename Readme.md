@@ -4,10 +4,10 @@ PHP SmartyPants
 PHP SmartyPants Lib 1.6.0-beta1 - Sun 23 Jan 2013
 
 by Michel Fortin  
-<http://michelf.ca/>
+<https://michelf.ca/>
 
 Original SmartyPants by John Gruber  
-<http://daringfireball.net/>
+<https://daringfireball.net/>
 
 
 Introduction
@@ -125,8 +125,8 @@ generates HTML such as Markdown, you should filter the text *after* the
 To learn more about configuration options, see the full list of
 [configuration variables].
 
- [configuration variables]: http://michelf.ca/projects/php-smartypants/configuration/
- [pmd]: http://michelf.ca/projects/php-markdown/
+ [configuration variables]: https://michelf.ca/projects/php-smartypants/configuration/
+ [pmd]: https://michelf.ca/projects/php-markdown/
 
 
 Options and Configuration
@@ -339,11 +339,11 @@ Copyright and License
 ---------------------
 
 Copyright (c) 2005-2013 Michel Fortin  
-<http://michelf.ca/>
+<https://michelf.ca/>
 All rights reserved.
 
 Copyright (c) 2003-2004 John Gruber
-<http://daringfireball.net/>
+<https://daringfireball.net/>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
