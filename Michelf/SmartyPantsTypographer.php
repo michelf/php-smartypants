@@ -3,7 +3,7 @@
 # SmartyPants Typographer  -  Smart typography for web sites
 #
 # PHP SmartyPants & Typographer  
-# Copyright (c) 2004-2013 Michel Fortin
+# Copyright (c) 2004-2016 Michel Fortin
 # <https://michelf.ca/>
 #
 # Original SmartyPants

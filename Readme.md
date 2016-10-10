@@ -249,7 +249,7 @@ Typographer 1.0 (28 Jun 2006)
 Copyright and License
 ---------------------
 
-Copyright (c) 2005-2013 Michel Fortin  
+Copyright (c) 2005-2016 Michel Fortin  
 <https://michelf.ca/>
 All rights reserved.
 

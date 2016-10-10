@@ -1,5 +1,5 @@
 PHP SmartyPants Lib  
-Copyright (c) 2005-2013 Michel Fortin  
+Copyright (c) 2005-2016 Michel Fortin  
 <https://michelf.ca/>  
 All rights reserved.
 
