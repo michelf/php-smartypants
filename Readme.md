@@ -31,10 +31,12 @@ SmartyPants can perform the following transformations:
 *   Dashes (`--` and `---`) into en- and em-dash entities
 *   Three consecutive dots (`...`) into an ellipsis entity
 
-SmartyPants Typographer can perform those additional transformations:
+SmartyPants Typographer can perform additional transformations:
 
 *	French guillements done using (`<<` and `>>`) into true « guillemets »
 	HTML entities.
+*	Comma-style quotes (` ,,like this`` ` or ` ''like this,, `) into their 
+	curly equivalent.
 *	Replace existing spaces with non-break spaces around punctuation marks 
 	where appropriate, can also add or remove them if configured to.
 *	Replace existing spaces with non-break spaces for spaces used as 
@@ -85,8 +87,8 @@ looks like:
     6'2" tall
 
 
-Installation and Requirement
-----------------------------
+Requirements
+------------
 
 This library package requires PHP 5.3 or later.
 
@@ -116,7 +118,7 @@ SmartyPants Typographer is also available the same way:
 
 If you are using PHP SmartyPants with another text filter function that 
 generates HTML such as Markdown, you should filter the text *after* the 
-`transform` function call. This is an example with [PHP Markdown][pmd]:
+the HTML-generating filter. This is an example with [PHP Markdown][pmd]:
 
 	use \Michelf\Markdown, \Michelf\SmartyPants;
 	$my_html = Markdown::defaultTransform($my_text);
