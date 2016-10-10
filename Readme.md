@@ -131,98 +131,24 @@ To learn more about configuration options, see the full list of
  [pmd]: https://michelf.ca/projects/php-markdown/
 
 
-Options and Configuration
--------------------------
+### Usage Without an Autoloader ###
 
-To change the default behaviour, you can pass a second argument to the
-`defaultTransform` function with a configuration string. You can also 
-instantiate a parser object directly with the configuration string and then
-call its `transform` method:
+If you cannot use class autoloading, you can still use include or require to 
+access the parser. To load the \Michelf\SmartyPants parser, do it this way:
 
-	$my_html = SmartyPants::defaultTransform($my_html, 'qBD');
+	require_once 'Michelf/SmartyPants.inc.php';
+	
+Or, if you need the \Michelf\SmartyPantsTypographer parser:
 
-	$parser = new SmartyPants('qBD');
-	$my_html = $parser->transform($my_html);
+	require_once 'Michelf/SmartyPantsTypographer.inc.php';
 
-Numeric values are the easiest way to configure SmartyPants's behavior:
-
-"0"
-:   Suppress all transformations. (Do nothing.)
-
-"1"
-:   Performs default SmartyPants transformations: quotes (including
-    backticks-style), em-dashes, and ellipses. `--` (dash dash) is
-    used to signify an em-dash; there is no support for en-dashes.
-
-"2"
-:   Same as smarty_pants="1", except that it uses the old-school
-    typewriter shorthand for dashes: `--` (dash dash) for en-dashes,
-    `---` (dash dash dash) for em-dashes.
-
-"3"
-:   Same as smarty_pants="2", but inverts the shorthand for dashes: `--`
-    (dash dash) for em-dashes, and `---` (dash dash dash) for en-dashes.
-
-"-1"
-:   Stupefy mode. Reverses the SmartyPants transformation process,
-    turning the HTML entities produced by SmartyPants into their ASCII
-    equivalents. E.g. `&#8220;` is turned into a simple double-quote
-    (`"`), `&#8212;` is turned into two dashes, etc. This is useful if you
-    wish to suppress smart punctuation in specific pages, such as
-    RSS feeds.
-
-The following single-character attribute values can be combined to
-toggle individual transformations from within the configuration parameter.
-For example, to educate normal quotes and em-dashes, but not
-ellipses or backticks-style quotes:
-
-    $my_html = SmartyPants::defaultTransform($my_html, "qd");
-
-"q"
-:   Educates normal quote characters: (`"`) and (`'`).
-
-"b"
-:   Educates ` ``backticks'' ` double quotes.
-
-"B"
-:   Educates backticks-style double quotes and ` `single' ` quotes.
-
-"d"
-:   Educates em-dashes.
-
-"D"
-:   Educates em-dashes and en-dashes, using old-school typewriter
-    shorthand: (dash dash) for en-dashes, (dash dash dash) for
-    em-dashes.
-
-"i"
-:   Educates em-dashes and en-dashes, using inverted old-school
-    typewriter shorthand: (dash dash) for em-dashes, (dash dash dash)
-    for en-dashes.
-
-"e"
-:   Educates ellipses.
-
-"w"
-:   Translates any instance of `&quot;` into a normal double-quote
-    character. This should be of no interest to most people, but of
-    particular interest to anyone who writes their posts using
-    Dreamweaver, as Dreamweaver inexplicably uses this entity to
-    represent a literal double-quote character. SmartyPants only
-    educates normal quotes, not entities (because ordinarily, entities
-    are used for the explicit purpose of representing the specific
-    character they represent). The "w" option must be used in
-    conjunction with one (or both) of the other quote options ("q" or
-    "b"). Thus, if you wish to apply all SmartyPants transformations
-    (quotes, en- and em-dashes, and ellipses) and also translate
-    `&quot;` entities into regular quotes so SmartyPants can educate
-    them, you should set the configuration argument when calling the 
-	function:
-
-        $my_html = SmartyPants::defaultTransform($my_html, "qDew");
+While the plain `.php` files depend on autoloading to work correctly, using the 
+`.inc.php` files instead will eagerly load the dependencies that would be loaded 
+on demand if you were using autoloading.
 
 
-### Algorithmic Shortcomings ###
+Algorithmic Shortcomings
+------------------------
 
 One situation in which quotes will get curled the wrong way is when
 apostrophes are used at the start of leading contractions. For example:
