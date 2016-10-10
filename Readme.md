@@ -237,23 +237,6 @@ proper HTML entity for closing single-quotes (`&#8217;` or `&rsquo;`) by
 hand.
 
 
-Public API and Versioning Policy
----------------------------------
-
-Version numbers are of the form *major*.*minor*.*patch*.
-
-The public API of PHP Markdown consist of the two parser classes `SmartyPants`
-and `SmartyPantsTypographer`, their constructors, the `transform` and
-`defaultTransform` functions. The public API is stable for a given major 
-version number. It might get additions when the minor version number increments.
-
-Public members are the public API. Protected members are not: while subclassing 
-the parser might be useful in some case, generally its done to change how 
-things works, most often in a way that requires specific knowleadge of the 
-internals. I don't want to discourage such hacks, hence why most members are
-protected, but I can't guarenty that new versions change the internals.
-
-
 Bugs
 ----
 
