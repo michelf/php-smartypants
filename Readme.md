@@ -199,8 +199,6 @@ PHP SmartyPants 1.5.1f:
 	".inc.php" variants of the file will make sure everything is included.
 
 *	For those of you who cannot use class autoloading, you can now
-	include `Michelf/SmartyPants.inc.php` or `Michelf/SmartyPants.inc.php` (note
-	the `.inc.php` extension) to automatically include other files required
-	by the parser.
-
-
+	include `Michelf/SmartyPants.inc.php` or
+	`Michelf/SmartyPantsTypographer.inc.php` (note the `.inc.php` extension)
+	to automatically include other files required by the parser.
