@@ -13,21 +13,6 @@
 namespace Michelf;
 
 
-### Pre-Configured SmartyPants Modes ###
-
-# SmartyPants does nothing at all
-const  SMARTYPANTS_ATTR_DO_NOTHING             =  0;
-# "--" for em-dashes; no en-dash support  
-const  SMARTYPANTS_ATTR_EM_DASH                =  1;
-# "---" for em-dashes; "--" for en-dashes  
-const  SMARTYPANTS_ATTR_LONG_EM_DASH_SHORT_EN  =  2;
-# "--" for em-dashes; "---" for en-dashes  
-const  SMARTYPANTS_ATTR_SHORT_EM_DASH_LONG_EN  =  3;
-
-# Default is SMARTYPANTS_ATTR_EM_DASH
-const  SMARTYPANTS_ATTR_DEFAULT  =  SMARTYPANTS_ATTR_EM_DASH;
-
-
 #
 # SmartyPants Parser Class
 #
@@ -37,6 +22,23 @@ class SmartyPants {
 	### Version ###
 
 	const  SMARTYPANTSLIB_VERSION  =  "1.6.0-beta1";
+
+
+	### Presets
+
+	# SmartyPants does nothing at all
+	const  SMARTYPANTS_ATTR_DO_NOTHING             =  0;
+	# "--" for em-dashes; no en-dash support
+	const  SMARTYPANTS_ATTR_EM_DASH                =  1;
+	# "---" for em-dashes; "--" for en-dashes
+	const  SMARTYPANTS_ATTR_LONG_EM_DASH_SHORT_EN  =  2;
+	# "--" for em-dashes; "---" for en-dashes
+	const  SMARTYPANTS_ATTR_SHORT_EM_DASH_LONG_EN  =  3;
+	# "--" for em-dashes; "---" for en-dashes
+	const  SMARTYPANTS_ATTR_STUPEFY                = -1;
+
+	# The default preset: SMARTYPANTS_ATTR_EM_DASH
+	const  SMARTYPANTS_ATTR_DEFAULT  =  SMARTYPANTS_ATTR_EM_DASH;
 
 
 	### Standard Function Interface ###
