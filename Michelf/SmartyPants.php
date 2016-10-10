@@ -27,23 +27,23 @@ class SmartyPants {
 	### Presets
 
 	# SmartyPants does nothing at all
-	const  SMARTYPANTS_ATTR_DO_NOTHING             =  0;
+	const  ATTR_DO_NOTHING             =  0;
 	# "--" for em-dashes; no en-dash support
-	const  SMARTYPANTS_ATTR_EM_DASH                =  1;
+	const  ATTR_EM_DASH                =  1;
 	# "---" for em-dashes; "--" for en-dashes
-	const  SMARTYPANTS_ATTR_LONG_EM_DASH_SHORT_EN  =  2;
+	const  ATTR_LONG_EM_DASH_SHORT_EN  =  2;
 	# "--" for em-dashes; "---" for en-dashes
-	const  SMARTYPANTS_ATTR_SHORT_EM_DASH_LONG_EN  =  3;
+	const  ATTR_SHORT_EM_DASH_LONG_EN  =  3;
 	# "--" for em-dashes; "---" for en-dashes
-	const  SMARTYPANTS_ATTR_STUPEFY                = -1;
+	const  ATTR_STUPEFY                = -1;
 
-	# The default preset: SMARTYPANTS_ATTR_EM_DASH
-	const  SMARTYPANTS_ATTR_DEFAULT  =  SMARTYPANTS_ATTR_EM_DASH;
+	# The default preset: ATTR_EM_DASH
+	const  ATTR_DEFAULT  =  SmartyPants::ATTR_EM_DASH;
 
 
 	### Standard Function Interface ###
 
-	public static function defaultTransform($text, $attr = SMARTYPANTS_ATTR_DEFAULT) {
+	public static function defaultTransform($text, $attr = SmartyPants::ATTR_DEFAULT) {
 	#
 	# Initialize the parser and return the result of its transform method.
 	# This will work fine for derived classes too.
@@ -81,7 +81,7 @@ class SmartyPants {
 
 	### Parser Implementation ###
 
-	public function __construct($attr = SMARTYPANTS_ATTR_DEFAULT) {
+	public function __construct($attr = SmartyPants::ATTR_DEFAULT) {
 	#
 	# Initialize a parser with certain attributes.
 	#

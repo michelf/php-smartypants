@@ -63,7 +63,7 @@ class SmartyPantsTypographer extends \Michelf\SmartyPants {
 
 	### Parser Implementation ###
 
-	public function __construct($attr = SMARTYPANTS_ATTR_DEFAULT) {
+	public function __construct($attr = SmartyPants::ATTR_DEFAULT) {
 	#
 	# Initialize a SmartyPantsTypographer_Parser with certain attributes.
 	#
