@@ -21,7 +21,7 @@ class SmartyPants {
 
 	### Version ###
 
-	const  SMARTYPANTSLIB_VERSION  =  "1.6.0-beta1";
+	const  SMARTYPANTSLIB_VERSION  =  "1.6.0";
 
 
 	### Presets
