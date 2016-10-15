@@ -148,6 +148,26 @@ class SmartyPantsTypographer extends \Michelf\SmartyPants {
 	}
 
 
+	function decodeEntitiesInConfiguration() {
+	#
+	#   Utility function that converts entities in configuration variables to
+	#   UTF-8 characters.
+	#
+		$this->smart_doublequote_open  = html_entity_decode($this->smart_doublequote_open);
+		$this->smart_doublequote_close = html_entity_decode($this->smart_doublequote_close);
+		$this->smart_singlequote_open  = html_entity_decode($this->smart_singlequote_open);
+		$this->smart_singlequote_close = html_entity_decode($this->smart_singlequote_close);
+		$this->space_emdash      = html_entity_decode($this->space_emdash);
+		$this->space_endash      = html_entity_decode($this->space_endash);
+		$this->space_colon       = html_entity_decode($this->space_colon);
+		$this->space_semicolon   = html_entity_decode($this->space_semicolon);
+		$this->space_marks       = html_entity_decode($this->space_marks);
+		$this->space_frenchquote = html_entity_decode($this->space_frenchquote);
+		$this->space_thousand    = html_entity_decode($this->space_thousand);
+		$this->space_unit        = html_entity_decode($sp->space_unit);
+	}
+
+
 	function educate($t, $prev_token_last_char) {
 		$t = parent::educate($t, $prev_token_last_char);
 		
