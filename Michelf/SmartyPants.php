@@ -70,13 +70,13 @@ class SmartyPants {
 	public $tags_to_skip = 'pre|code|kbd|script|style|math';
 
 	# Options to specify which transformations to make:
-	protected $do_nothing   = 0; # disable all transforms
-	protected $do_quotes    = 0;
-	protected $do_backticks = 0; # 1 => double only, 2 => double & single
-	protected $do_dashes    = 0; # 1, 2, or 3 for the three modes described above
-	protected $do_ellipses  = 0;
-	protected $do_stupefy   = 0;
-	protected $convert_quot = 0; # should we translate &quot; entities into normal quotes?
+	public $do_nothing   = 0; # disable all transforms
+	public $do_quotes    = 0;
+	public $do_backticks = 0; # 1 => double only, 2 => double & single
+	public $do_dashes    = 0; # 1, 2, or 3 for the three modes described above
+	public $do_ellipses  = 0;
+	public $do_stupefy   = 0;
+	public $convert_quot = 0; # should we translate &quot; entities into normal quotes?
 
 
 	### Parser Implementation ###
