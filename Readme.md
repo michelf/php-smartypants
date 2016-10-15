@@ -1,7 +1,7 @@
 PHP SmartyPants
 ===============
 
-PHP SmartyPants Lib 1.6.0 - 10 Oct 2016
+PHP SmartyPants Lib 1.7.0 - 15 Oct 2016
 
 by Michel Fortin  
 <https://michelf.ca/>
@@ -177,6 +177,16 @@ example text to illustrate.
 
 Version History
 ---------------
+
+PHP SmartyPants Lib 1.7.0 (15 Oct 2016)
+
+*	Made `public` some configuration variables that were documented
+	were documented as `public` but were actually `protected`.
+
+*	Added the `decodeEntitiesInConfiguration()` method on 
+	`SmartyPantsTypographer` to quickly convert HTML entities in configuration 
+	variables to their corresponding UTF-8 character.
+
 
 PHP SmartyPants Lib 1.6.0 (10 Oct 2016)
 
