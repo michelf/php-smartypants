@@ -164,7 +164,7 @@ class SmartyPantsTypographer extends \Michelf\SmartyPants {
 		$this->space_marks       = html_entity_decode($this->space_marks);
 		$this->space_frenchquote = html_entity_decode($this->space_frenchquote);
 		$this->space_thousand    = html_entity_decode($this->space_thousand);
-		$this->space_unit        = html_entity_decode($sp->space_unit);
+		$this->space_unit        = html_entity_decode($this->space_unit);
 	}
 
 
