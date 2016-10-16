@@ -1,7 +1,7 @@
 PHP SmartyPants
 ===============
 
-PHP SmartyPants Lib 1.7.0 - 15 Oct 2016
+PHP SmartyPants Lib 1.7.1 - 16 Oct 2016
 
 by Michel Fortin  
 <https://michelf.ca/>
@@ -177,6 +177,12 @@ example text to illustrate.
 
 Version History
 ---------------
+
+PHP SmartyPants Lib 1.7.1 (16 Oct 2016)
+
+*	Fixing bug where `decodeEntitiesInConfiguration()` would cause the 
+	configuration to set the space for units to an empty string.
+
 
 PHP SmartyPants Lib 1.7.0 (15 Oct 2016)
 
