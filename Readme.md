@@ -33,7 +33,7 @@ SmartyPants can perform the following transformations:
 
 SmartyPants Typographer can perform additional transformations:
 
-*	French guillements done using (`<<` and `>>`) into true « guillemets »
+*	French guillemets done using (`<<` and `>>`) into true « guillemets »
 	HTML entities.
 *	Comma-style quotes (` ,,like this`` ` or ` ''like this,, `) into their 
 	curly equivalent.
