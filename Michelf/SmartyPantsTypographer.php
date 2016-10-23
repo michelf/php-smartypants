@@ -23,6 +23,7 @@ class SmartyPantsTypographer extends \Michelf\SmartyPants {
 	# Options to specify which transformations to make:
 	public $do_comma_quotes      = 0;
 	public $do_guillemets        = 0;
+	public $do_geresh_gershayim  = 0;
 	public $do_space_emdash      = 0;
 	public $do_space_endash      = 0;
 	public $do_space_colon       = 0;
@@ -36,6 +37,8 @@ class SmartyPantsTypographer extends \Michelf\SmartyPants {
 	public $doublequote_low         = "&#8222;"; // replacement for ,,
 	public $guillemet_leftpointing  = "&#171;"; // replacement for <<
 	public $guillemet_rightpointing = "&#187;"; // replacement for >>
+	public $geresh    = "&#1523;";
+	public $gershayim = "&#1524;";
 
 	# Space characters for different places:
 	# Space around em-dashes.  "He_—_or she_—_should change that."
@@ -103,7 +106,8 @@ class SmartyPantsTypographer extends \Michelf\SmartyPants {
 		if ($attr == "1" || $attr == "2" || $attr == "3") {
 			# Do everything, turn all options on.
 			$this->do_comma_quotes      = 1;
-			$this->do_guillemets  = 1;
+			$this->do_guillemets        = 1;
+			$this->do_geresh_gershayim  = 1;
 			$this->do_space_emdash      = 1;
 			$this->do_space_endash      = 1;
 			$this->do_space_colon       = 1;
@@ -122,6 +126,7 @@ class SmartyPantsTypographer extends \Michelf\SmartyPants {
 			foreach ($chars as $c){
 				if      ($c == "c") { $current =& $this->do_comma_quotes; }
 				else if ($c == "g") { $current =& $this->do_guillemets; }
+				else if ($c == "G") { $current =& $this->do_geresh_gershayim; }
 				else if ($c == ":") { $current =& $this->do_space_colon; }
 				else if ($c == ";") { $current =& $this->do_space_semicolon; }
 				else if ($c == "m") { $current =& $this->do_space_marks; }
@@ -169,6 +174,9 @@ class SmartyPantsTypographer extends \Michelf\SmartyPants {
 
 
 	function educate($t, $prev_token_last_char) {
+		# must happen before regular smart quotes
+		if ($this->do_geresh_gershayim)  $t = $this->educateGereshGershayim($t);
+
 		$t = parent::educate($t, $prev_token_last_char);
 		
 		if ($this->do_comma_quotes)      $t = $this->educateCommaQuotes($t);
@@ -215,6 +223,24 @@ class SmartyPantsTypographer extends \Michelf\SmartyPants {
 	#
 		$_ = preg_replace("/(?:<|&lt;){2}/", $this->guillemet_leftpointing, $_);
 		$_ = preg_replace("/(?:>|&gt;){2}/", $this->guillemet_rightpointing, $_);
+		return $_;
+	}
+
+
+	protected function educateGereshGershayim($_) {
+	#
+	#   Parameter:  String, UTF-8 encoded.
+	#   Returns:    The string, where simple a or double quote surrounded by
+	#               two hebrew characters is replaced into a typographic
+	#               geresh or gershayim punctuation mark.
+	#
+	#   Example input:  צה"ל / צ'ארלס
+	#   Example output: צה״ל / צ׳ארלס
+	#
+		// surrounding code points can be U+0590 to U+05BF and U+05D0 to U+05F2
+		// encoded in UTF-8: D6.90 to D6.BF and D7.90 to D7.B2
+		$_ = preg_replace('/(?<=\xD6[\x90-\xBF]|\xD7[\x90-\xB2])\'(?=\xD6[\x90-\xBF]|\xD7[\x90-\xB2])/', $this->geresh, $_);
+		$_ = preg_replace('/(?<=\xD6[\x90-\xBF]|\xD7[\x90-\xB2])"(?=\xD6[\x90-\xBF]|\xD7[\x90-\xB2])/', $this->gershayim, $_);
 		return $_;
 	}
 
