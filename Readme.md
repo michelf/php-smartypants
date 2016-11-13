@@ -189,14 +189,14 @@ Current
 
 *	Added convertion of apostrophe and double quote to Hebrew Geresh 
 	and Gershayim when the apostrophe or double quote is surrounded on
-	both side by a hebrew character. For instance:
+	both sides by a Hebrew character. For instance:
 
 		input:  צה"ל / צ'ארלס
 		output: צה״ל / צ׳ארלס
 
 	You can still put quotes around Hebrew words and they'll become curled 
-	quotation marks (if that is enabled). This new transform only applies when 
-	in the middel of a word, and only to words in Hebrew.
+	quotation marks (if that is enabled). This new transform only applies 
+	in the middle of a word, and only to words in Hebrew.
 
 
 PHP SmartyPants Lib 1.7.1 (16 Oct 2016)
