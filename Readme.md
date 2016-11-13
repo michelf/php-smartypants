@@ -181,13 +181,13 @@ Version History
 PHP SmartyPants Lib 1.8.0 (13 Nov 2016)
 
 *	Can now set replacement characters for all transformations using 
-	configuration variables, including ellipsies and dashes.
+	configuration variables, including ellipses and dashes.
 
 *	Relocated replacement quotes configuration variables from
 	`SmartyPantsTyppographer` to `SmartyPants`. Also relocated
 	`decodeEntitiesInConfiguration()` to follow the configuration variables.
 
-*	Added convertion of apostrophe and double quote to Hebrew Geresh 
+*	Added conversion of apostrophe and double quote to Hebrew Geresh 
 	and Gershayim when the apostrophe or double quote is surrounded on
 	both sides by a Hebrew character. For instance:
 
