@@ -178,6 +178,16 @@ example text to illustrate.
 Version History
 ---------------
 
+Current
+
+*	Can now set replacement characters for all transformations using 
+	configuration variables, including ellipsies and dashes.
+
+*	Relocated replacement quotes configuration variables from
+	`SmartyPantsTyppographer` to `SmartyPants`. Also relocated
+	`decodeEntitiesInConfiguration()` to follow the configuration variables.
+
+
 PHP SmartyPants Lib 1.7.1 (16 Oct 2016)
 
 *	Fixing bug where `decodeEntitiesInConfiguration()` would cause the 
