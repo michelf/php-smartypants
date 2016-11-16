@@ -178,6 +178,11 @@ example text to illustrate.
 Version History
 ---------------
 
+Current
+
+*	Fixed an issue introduced in 1.8.0 where backtick quotes were broken.
+
+
 PHP SmartyPants Lib 1.8.0 (13 Nov 2016)
 
 *	Can now set replacement characters for all transformations using 

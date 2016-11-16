@@ -382,8 +382,8 @@ class SmartyPants {
 	#
 
 		$_ = str_replace(array("``", "''",),
-						 array($this->backtick_doublequote,
-							   $this->apostrophe_doublequote), $_);
+						 array($this->backtick_doublequote_open,
+							   $this->backtick_doublequote_close), $_);
 		return $_;
 	}
 
