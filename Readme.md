@@ -1,7 +1,7 @@
 PHP SmartyPants
 ===============
 
-PHP SmartyPants Lib 1.8.0 - 13 Nov 2016
+PHP SmartyPants Lib 1.8.1 - 12 Dec 2016
 
 by Michel Fortin  
 <https://michelf.ca/>
@@ -178,7 +178,7 @@ example text to illustrate.
 Version History
 ---------------
 
-Current
+PHP SmartyPants Lib 1.8.1 (12 Dec 2016)
 
 *	Fixed an issue introduced in 1.8.0 where backtick quotes were broken.
 
