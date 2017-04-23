@@ -13,8 +13,8 @@ spl_autoload_register(function($class){
 });
 
 // Get SmartyPants and Markdown classes
-use \Michelf\SmartyPants;
-use \Michelf\MarkdownExtra;
+use Michelf\SmartyPants;
+use Michelf\MarkdownExtra;
 
 // Read file and pass content through the Markdown praser
 $text = file_get_contents('Readme.md');
