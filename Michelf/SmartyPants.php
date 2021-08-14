@@ -293,7 +293,6 @@ class SmartyPants {
 		$sq_close = $this->smart_singlequote_close;
 	
 		# Make our own "punctuation" character class, because the POSIX-style
-		# [:PUNCT:] is only available in Perl 5.6 or later:
 		$punct_class = "[!\"#\\$\\%'()*+,-.\\/:;<=>?\\@\\[\\\\\]\\^_`{|}~]";
 
 		# Special case if the very first character is a quote
